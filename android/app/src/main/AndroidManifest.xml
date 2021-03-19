@@ -1,5 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.algoristy.emall_adminpanel">
+    <uses-permission android:name="android.permission.INTERNET"/>
    <application
         android:label="emall_adminpanel"
         android:icon="@mipmap/ic_launcher">
