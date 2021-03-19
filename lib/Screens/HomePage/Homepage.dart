@@ -117,6 +117,7 @@ class _HomePageState extends State<HomePage> {
                                   DrawerTile("Vender Payments"),
                                   DrawerTile("Sales"),
                                   DrawerTile("New SubCategory"),
+                                  DrawerTile("Language"),
                                   DrawerTile("Logout"),
                                 ],
                               ),
