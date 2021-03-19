@@ -36,8 +36,6 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    ScreenWidth = MediaQuery.of(context).size.width;
-    ScreenHeight = MediaQuery.of(context).size.height;
     @override
     void didChangeDependencies() {
       getLocale().then((locale) {

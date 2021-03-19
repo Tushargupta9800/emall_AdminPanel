@@ -1,3 +1,7 @@
+import 'package:emall_adminpanel/SettingsAndVariables/Toast/ToastMessages.dart';
+import 'package:emall_adminpanel/SettingsAndVariables/Variables.dart';
+import 'package:emall_adminpanel/SettingsAndVariables/routes/RouteCodes.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -7,19 +11,11 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   FocusNode textSecondFocusNode = new FocusNode();
-  String Email = "Email";
-  String Password = "Password";
-  String Login = "Login";
-  String NoAccount = "Create Account?";
-  String language = "English";
   bool loading = true;
   TextEditingController EmailController = TextEditingController();
   TextEditingController PasswordController = TextEditingController();
   Icon PasswordIcon = Icon(Icons.lock_outline);
   bool passwordobscure = true;
-
-  String ValidEmail = "Enter a valid Email";
-  String ErrorLogin = "Error In Login Try Again";
 
   @override
   void dispose() {
@@ -37,10 +33,14 @@ class _LoginScreenState extends State<LoginScreen> {
     return Column(
       children: [
         Row(
-          // mainAxisAlignment: (languageEnglish)?MainAxisAlignment.start:MainAxisAlignment.end,
+          mainAxisAlignment: MainAxisAlignment.start,
           children: [
             Text(text,
-              // style: mystyle(15.0, FontWeight.w500,Colors.blue[800]),
+              style: TextStyle(
+                fontSize: 15.0,
+                fontWeight: FontWeight.w500,
+                color: DarkBlue,
+              ),
             ),
             // HSpace(20.0),
           ],
@@ -48,16 +48,22 @@ class _LoginScreenState extends State<LoginScreen> {
         Container(
           padding: EdgeInsets.only(left: 20.0,right: 20.0),
           margin: EdgeInsets.symmetric(vertical: 8.0,horizontal: 5.0),
-          // decoration: curveDecoration(20.0, Colors.white,800),
+          decoration: BoxDecoration(
+            color: White,
+            borderRadius: BorderRadius.all(Radius.circular(20)),
+            boxShadow: [BoxShadow(
+              color: Colors.grey[800],
+              blurRadius: 5.0,
+            ),],
+          ),
           child: TextField(
             controller: Controller,
-            // textDirection: (languageEnglish)?TextDirection.ltr:TextDirection.rtl,
             style: TextStyle(fontSize: 20),
             decoration: new InputDecoration(
               suffixIcon: InkWell(
                 onTap: (){
                   FocusScope.of(context).requestFocus(new FocusNode());
-                  if(text == Password){
+                  if(text == "Password"){
                     setState(() {
                       if(passwordobscure) PasswordIcon = Icon(Icons.lock_open);
                       else PasswordIcon = Icon(Icons.lock_outline);
@@ -85,6 +91,8 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
+    ScreenWidth = MediaQuery.of(context).size.width;
+    ScreenHeight = MediaQuery.of(context).size.height;
     return Scaffold(
       body: Container(
         width: MediaQuery.of(context).size.width,
@@ -104,50 +112,63 @@ class _LoginScreenState extends State<LoginScreen> {
                 padding: EdgeInsets.symmetric(horizontal: 20.0,vertical: 20.0),
                 margin: EdgeInsets.all(20.0),
                 width: (MediaQuery.of(context).size.width > 400)?400:MediaQuery.of(context).size.width,
-                // decoration: curveDecoration(20.0, Colors.grey[100],800),
+                decoration: BoxDecoration(
+                  color: LightestGrey,
+                  borderRadius: BorderRadius.all(Radius.circular(20)),
+                  boxShadow: [BoxShadow(
+                    color: Colors.grey[800],
+                    blurRadius: 5.0,
+                  ),],
+                ),
                 child: SingleChildScrollView(
                   scrollDirection: Axis.vertical,
                   child: Center(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Center(child: Text(Login,
-                          // style: mystyle(25.0, FontWeight.w500,Colors.black),
+                        Center(child: Text("Login",
+                          style: TextStyle(
+                            fontSize: 25,
+                            fontWeight: FontWeight.w500,
+                            color: Black,
+                          ),
                         )),
-                        // VSpace(10.0),
-                        InputText(Email, EmailController,TextInputType.emailAddress,false,Icon(Icons.email)),
-                        InputText(Password, PasswordController,TextInputType.text,passwordobscure,PasswordIcon),
-                        // VSpace(10.0),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            GestureDetector(
-                              onTap: (){
-                                // router.pop(context);
-                                // router.navigateTo(context, "/auth/register", transition: TransitionType.fadeIn);
-                              },
-                              child: Text(NoAccount,
-                                // style: mystyle(15.0, FontWeight.w500,Colors.blue[800]),
+                        SizedBox(height: 10.0,),
+                        InputText("Email", EmailController,TextInputType.emailAddress,false,Icon(Icons.email)),
+                        InputText("Password", PasswordController,TextInputType.text,passwordobscure,PasswordIcon),
+                        SizedBox(height: 10.0,),
+                        Center(
+                          child: GestureDetector(
+                            onTap: () async {
+                              setState(() {
+                                if(_ValidateCredentials()){
+                                  //after login
+                                  Navigator.popAndPushNamed(context, HomePageRouteCode);
+                                }
+                                else{
+                                  ShowToast("What The Hack you just type", context);
+                                }
+                              });
+                            },
+                            child: Container(
+                              padding: EdgeInsets.all(10.0),
+                              decoration: BoxDecoration(
+                                color: Blue,
+                                borderRadius: BorderRadius.all(Radius.circular(10)),
+                                boxShadow: [BoxShadow(
+                                  color: Colors.grey[400],
+                                  blurRadius: 5.0,
+                                ),],
                               ),
-                            ),
-                            GestureDetector(
-                              onTap: () async {
-                                setState(() {
-                                  // Vender.Email = EmailController.text;
-                                  // Vender.Password = PasswordController.text;
-                                  // loading = true;
-                                });
-                              },
-                              child: Container(
-                                margin: EdgeInsets.only(left: 60),
-                                padding: EdgeInsets.all(10.0),
-                                // decoration: curveDecoration(10.0, Colors.blue,400),
-                                child: Text(Login,
-                                  // style: mystyle(15.0, FontWeight.w400,Colors.white),
+                              child: Text("Login",
+                                style: TextStyle(
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.w500,
+                                  color: White,
                                 ),
                               ),
                             ),
-                          ],
+                          ),
                         ),
                       ],
                     ),
@@ -159,6 +180,10 @@ class _LoginScreenState extends State<LoginScreen> {
         ),
       ),
     );
+  }
+
+  bool _ValidateCredentials(){
+    return (EmailController.text == "email" && PasswordController.text.length > 0);
   }
 
 }

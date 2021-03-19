@@ -54,7 +54,7 @@ flutter:
   assets:
     - lib/localization/ar.json
     - lib/localization/en.json
-    - Assets/images/background
+    - Assets/images/background/
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
