@@ -1,4 +1,4 @@
-String LoginRouteCode = "/auth.login";
+String LoginRouteCode = "/auth/login";
 String HomePageRouteCode = "/admin/homepage";
 String LogoutRouteCode = "/admin/homepage/drawer/logout";
 

@@ -1,3 +1,5 @@
+import 'package:emall_adminpanel/Model/SubCategoryModel.dart';
+import 'package:emall_adminpanel/Model/VenderModel.dart';
 import 'package:emall_adminpanel/SettingsAndVariables/Settings.dart';
 import 'package:flutter/material.dart';
 
@@ -17,3 +19,6 @@ Color DarkBlue = HexColor.fromHex("#18396A");
 
 String NoImageImageCode = "Assets/images/background/noimage.png";
 String BackgroundImageCode = "Assets/images/background/background.png";
+
+List<SubCategoryModel> AllSubCategoryList = [];
+List<VenderModel> AllVendersList = [];

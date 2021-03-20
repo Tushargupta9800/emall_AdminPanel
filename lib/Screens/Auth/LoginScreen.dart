@@ -1,3 +1,5 @@
+import 'package:emall_adminpanel/Api/Auth/Auth.dart';
+import 'package:emall_adminpanel/Screens/Others/Loading.dart';
 import 'package:emall_adminpanel/SettingsAndVariables/Toast/ToastMessages.dart';
 import 'package:emall_adminpanel/SettingsAndVariables/Variables.dart';
 import 'package:emall_adminpanel/SettingsAndVariables/routes/RouteCodes.dart';
@@ -11,7 +13,7 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   FocusNode textSecondFocusNode = new FocusNode();
-  bool loading = true;
+  bool loading = false;
   TextEditingController EmailController = TextEditingController();
   TextEditingController PasswordController = TextEditingController();
   Icon PasswordIcon = Icon(Icons.lock_outline);
@@ -141,9 +143,14 @@ class _LoginScreenState extends State<LoginScreen> {
                           child: GestureDetector(
                             onTap: () async {
                               setState(() {
+                                loading = true;
                                 if(_ValidateCredentials()){
                                   //after login
-                                  Navigator.popAndPushNamed(context, HomePageRouteCode);
+                                  AuthAdmin(PasswordController.text).then((value){
+                                    setState(() {loading = false;});
+                                    if(value) Navigator.popAndPushNamed(context, HomePageRouteCode);
+                                    else ShowToast("Wrong Password", context);
+                                  });
                                 }
                                 else{
                                   ShowToast("What The Hack you just type", context);
@@ -176,6 +183,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
               ),
             ),
+            Loadingscreen(loading, context),
           ],
         ),
       ),
