@@ -29,7 +29,6 @@ class OrderModel{
     Tax = double.parse(totalAmount.split(":")[3].split(",")[0]);
     Total = double.parse(totalAmount.split(":")[4].split(",")[0]);
     isit = (totalAmount.split(":")[5].split(",")[0].trim() == "Yes")?true:false;
-    print(isit);
   }
 
   OrderModel(
