@@ -1,3 +1,4 @@
+import 'package:emall_adminpanel/SettingsAndVariables/Settings.dart';
 import 'package:emall_adminpanel/SettingsAndVariables/Variables.dart';
 import 'package:emall_adminpanel/SettingsAndVariables/routes/RouteCodes.dart';
 import 'package:flutter/material.dart';
@@ -36,7 +37,13 @@ class _HomePageState extends State<HomePage> {
 
       child: InkWell(
         onTap: (){
-          if(Where == LanguageSubPageCode) Navigator.pushNamed(context, LanguageRouteCode);
+          if(Where == LanguageSubPageCode){
+            setState(() {
+              if(AppLanguage == "en") AppLanguage = "ar";
+              else AppLanguage = "en";
+              changeLanguage(AppLanguage, context);
+            });
+          }
           if(Where == LogoutSubPageCode) Navigator.popAndPushNamed(context, LogoutRouteCode);
         },
 
@@ -45,13 +52,19 @@ class _HomePageState extends State<HomePage> {
           child: Column(
             children: [
               SizedBox(height: 10,),
-              Text(text,
-                style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.w500,
-                  color: White,
-                ),
-                // style: mystyle(20.0, FontWeight.w400, Colors.white),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Text(text,
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.w500,
+                      color: White,
+                    ),
+                  ),
+                  (Where == LanguageSubPageCode)?Text("  " + AppLanguage):Container(width: 0,)
+                ],
               ),
               SizedBox(height: 10,),
               Container(
