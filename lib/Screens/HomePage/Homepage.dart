@@ -1,4 +1,7 @@
 import 'package:emall_adminpanel/Api/DeliveryCharges/GetDeliveryCharges.dart';
+import 'package:emall_adminpanel/Api/Products/HalfCompleted.dart';
+import 'package:emall_adminpanel/Api/Products/Sales.dart';
+import 'package:emall_adminpanel/Api/Products/orders.dart';
 import 'package:emall_adminpanel/Api/Secrets/Secrets.dart';
 import 'package:emall_adminpanel/Api/SubCategory/SubCategory.dart';
 import 'package:emall_adminpanel/Api/Venders/Validation.dart';
@@ -50,24 +53,31 @@ class _HomePageState extends State<HomePage> {
       child: InkWell(
         onTap: () {
           if (Where == DeliveryChargesSubPageCode) {
-            setState(() {
-              loading = true;
-            });
+            setState(() {loading = true;});
             GetDeliveryCharges().then((value) {
             if (value != -1) ShowDialogForCharges(value);
-            else ShowToast("Error", context);
-          });
-          }
+            else ShowToast("Error", context);});}
+
+          else if(Where == VenderPaymentSubPageCode) {
+            setState(() {loading = true;
+              HalfCompleted().then((value) {
+                setState(() {loading = false;});});});}
+
+          else if(Where == SalesSubPageCode){
+            setState(() {loading = true;
+              Sales().then((value) {
+                setState(() {loading = false;});});});}
+
+          else if(Where == OrderSubPageCode){
+            setState(() {loading = true;
+              AllOrders().then((value) {
+                setState(() {loading = false;});});});}
+
           else if(Where == ValidationSubPagecode){
-            setState(() {
-              loading = true;
-            });
+            setState(() {loading = true;});
             GetAllNonValdatingVenders().then((value){
-              setState(() {
-                loading = false;
-              });
-            });
-          }
+              setState(() {loading = false;});});}
+
           else if(Where == NewSubCategorySubPageCode){
             setState(() {loading = true;});
             AllSubCategories().then((value){

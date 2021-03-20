@@ -1,3 +1,4 @@
+import 'package:emall_adminpanel/Model/OrderModel.dart';
 import 'package:emall_adminpanel/Model/SubCategoryModel.dart';
 import 'package:emall_adminpanel/Model/VenderModel.dart';
 import 'package:emall_adminpanel/SettingsAndVariables/Settings.dart';
@@ -22,3 +23,6 @@ String BackgroundImageCode = "Assets/images/background/background.png";
 
 List<SubCategoryModel> AllSubCategoryList = [];
 List<VenderModel> AllVendersList = [];
+List<OrderModel> AllOrdersList = [];
+List<OrderModel> AllVenderPaymentLeftList = [];
+List<OrderModel> AllCompletedOrderList = [];
