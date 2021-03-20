@@ -1,5 +1,5 @@
-import 'package:emall_adminpanel/SettingsAndVariables/Settings.dart';
 import 'package:emall_adminpanel/SettingsAndVariables/Variables.dart';
+import 'package:emall_adminpanel/SettingsAndVariables/routes/RouteCodes.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {
@@ -12,7 +12,8 @@ class _HomePageState extends State<HomePage> {
   String hover = "";
   var color = Colors.blue[800];
 
-  Widget DrawerTile(String text){
+
+  Widget DrawerTile(String text,String Where){
 
     void _updateLocation(PointerEvent details) {
       setState(() {
@@ -35,7 +36,8 @@ class _HomePageState extends State<HomePage> {
 
       child: InkWell(
         onTap: (){
-
+          if(Where == LanguageSubPageCode) Navigator.pushNamed(context, LanguageRouteCode);
+          if(Where == LogoutSubPageCode) Navigator.popAndPushNamed(context, LogoutRouteCode);
         },
 
         child: Container(
@@ -93,7 +95,7 @@ class _HomePageState extends State<HomePage> {
                             padding: EdgeInsets.only(top: 10),
                             width: 100,
                             height: 100,
-                            child: Image.asset("Assets/images/background/noimage.png",),
+                            child: Image.asset(NoImageImageCode,),
                           ),
                           Container(
                             height: 20,
@@ -102,7 +104,7 @@ class _HomePageState extends State<HomePage> {
                           Container(
                             width: 200,
                             margin: EdgeInsets.symmetric(vertical: 20),
-                            height: MediaQuery.of(context).size.height - 250,
+                            height: MediaQuery.of(context).size.height - 230,
                             child: SingleChildScrollView(
                               scrollDirection: Axis.vertical,
                               child: Column(
@@ -112,13 +114,14 @@ class _HomePageState extends State<HomePage> {
                                     height: 1,
                                     color: Grey,
                                   ),
-                                  DrawerTile("Validation"),
-                                  DrawerTile("Orders"),
-                                  DrawerTile("Vender Payments"),
-                                  DrawerTile("Sales"),
-                                  DrawerTile("New SubCategory"),
-                                  DrawerTile("Language"),
-                                  DrawerTile("Logout"),
+                                  DrawerTile("Validation",ValidationSubPagecode),
+                                  DrawerTile("Orders",OrderSubPageCode),
+                                  DrawerTile("Vender Payments",VenderPaymentSubPageCode),
+                                  DrawerTile("Sales",SalesSubPageCode),
+                                  DrawerTile("New SubCategory",NewSubCategorySubPageCode),
+                                  DrawerTile("Language",LanguageSubPageCode),
+                                  DrawerTile("Delivery Charges",DeliveryChargesSubPageCode),
+                                  DrawerTile("Logout",LogoutSubPageCode),
                                 ],
                               ),
                             ),

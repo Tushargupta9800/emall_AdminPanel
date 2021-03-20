@@ -14,3 +14,6 @@ Color LightestGrey = Colors.grey[100];
 Color Blue = Colors.blue;
 Color Red = Colors.red;
 Color DarkBlue = HexColor.fromHex("#18396A");
+
+String NoImageImageCode = "Assets/images/background/noimage.png";
+String BackgroundImageCode = "Assets/images/background/background.png";
