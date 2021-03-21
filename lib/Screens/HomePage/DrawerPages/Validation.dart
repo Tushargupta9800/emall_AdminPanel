@@ -1,8 +1,13 @@
+import 'dart:ui';
 import 'package:clipboard/clipboard.dart';
+import 'package:emall_adminpanel/Api/Secrets/Secrets.dart';
+import 'package:emall_adminpanel/Api/Venders/Validation.dart';
 import 'package:emall_adminpanel/SettingsAndVariables/Toast/ToastMessages.dart';
 import 'package:emall_adminpanel/SettingsAndVariables/Variables.dart';
+import 'package:emall_adminpanel/SettingsAndVariables/routes/RouteCodes.dart';
 import 'package:flutter/material.dart';
 import 'package:horizontal_data_table/horizontal_data_table.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class Validation extends StatefulWidget {
   @override
@@ -19,13 +24,18 @@ class _ValidationState extends State<Validation> {
   }
 
   @override
+  void dispose() {
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Container(
       width: MediaQuery.of(context).size.width - 200,
       height: MediaQuery.of(context).size.height,
       child: HorizontalDataTable(
         leftHandSideColumnWidth: 100,
-        rightHandSideColumnWidth: 2150,
+        rightHandSideColumnWidth: 2250,
         isFixedHeader: true,
         headerWidgets: _getTitleWidget(),
         leftSideItemBuilder: _generateFirstColumnRow,
@@ -37,9 +47,9 @@ class _ValidationState extends State<Validation> {
         refreshIndicator: const WaterDropHeader(),
         refreshIndicatorHeight: 60,
         onRefresh: () async {
-          //Do sth
-          // await Future.delayed(const Duration(milliseconds: 500));
-          // _hdtRefreshController.refreshCompleted();
+          await GetAllNonValdatingVenders();
+          setState(() {});
+          _hdtRefreshController.refreshCompleted();
         },
         htdRefreshController: _hdtRefreshController,
       ),
@@ -49,6 +59,7 @@ class _ValidationState extends State<Validation> {
   List<Widget> _getTitleWidget() {
     return [
       _getTitleItemWidget('ID', 200),
+      _getTitleItemWidget('Validation', 100),
       _getTitleItemWidget('All Info', 100),
       _getTitleItemWidget('Name', 100),
       _getTitleItemWidget('Email',200),
@@ -110,12 +121,13 @@ class _ValidationState extends State<Validation> {
   Widget _generateRightHandSideColumnRow(BuildContext context, int index) {
     return Row(
       children: <Widget>[
+        _ValidateUser(AllVendersList[index].ID),
         _CopyTheData("All",index),
         _dataTableBlock(AllVendersList[index].Name,100),
         _dataTableBlock(AllVendersList[index].Email,200),
-        _ShowImage(AllVendersList[index].VATImage),
-        _ShowImage(AllVendersList[index].CRImage),
-        _ShowImage(AllVendersList[index].ProfilePicImage),
+        _ShowImage(AllVendersList[index].VATImage,AllVendersList[index].ID,"A"),
+        _ShowImage(AllVendersList[index].CRImage,AllVendersList[index].ID,"B"),
+        _ShowImage(AllVendersList[index].ProfilePicImage,AllVendersList[index].ID,"C"),
         _CopyTheData("Shop",index),
         _dataTableBlock(AllVendersList[index].Mobile,100),
         _dataTableBlock(AllVendersList[index].Shopname,100),
@@ -133,13 +145,47 @@ class _ValidationState extends State<Validation> {
     );
   }
 
-  Widget _ShowImage(var image){
-    return Container(
-      width: 100,
-      height: 52,
-      decoration: BoxDecoration(
-          border: Border.all(width: 0.5),
-        image: DecorationImage(image: image)
+  Widget _ValidateUser(String ID){
+    return InkWell(
+      onTap: () async {
+        await launch(ValidateTheUserUrl + ID);
+        GetAllNonValdatingVenders().then((value) {setState(() {});});
+      },
+      child: Container(
+        width: 100,
+        height: 52,
+        decoration: BoxDecoration(
+            border: Border.all(width: 0.5),
+        ),
+        child: Center(
+          child: Text("Validate",style: TextStyle(
+              color: DarkBlue,
+            decoration: TextDecoration.underline,
+          ),),
+        ),
+      ),
+    );
+  }
+
+  Widget _ShowImage(var image,String id,String extra){
+    return InkWell(
+      onTap: (){
+        setState(() {
+          HeroTag = id + extra;
+          HeroImage = image;
+        });
+        Navigator.pushNamed(context, FullImageRouteCode);
+      },
+      child: Hero(
+        tag: id + extra,
+        child: Container(
+          width: 100,
+          height: 52,
+          decoration: BoxDecoration(
+              border: Border.all(width: 0.5),
+            image: DecorationImage(image: image)
+          ),
+        ),
       ),
     );
   }

@@ -1,6 +1,7 @@
 String LoginRouteCode = "/auth/login";
 String HomePageRouteCode = "/admin/homepage";
 String LogoutRouteCode = "/admin/homepage/drawer/logout";
+String FullImageRouteCode = "/admin/homepage/drawer/validation/fullimage";
 
 //SubPageCodes
 String LanguageSubPageCode = "Language";

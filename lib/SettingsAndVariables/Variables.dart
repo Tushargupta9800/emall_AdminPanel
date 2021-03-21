@@ -26,3 +26,6 @@ List<VenderModel> AllVendersList = [];
 List<OrderModel> AllOrdersList = [];
 List<OrderModel> AllVenderPaymentLeftList = [];
 List<OrderModel> AllCompletedOrderList = [];
+
+String HeroTag = "";
+MemoryImage HeroImage;
