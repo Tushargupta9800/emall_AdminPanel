@@ -5,7 +5,7 @@ import 'package:emall_adminpanel/Model/OrderModel.dart';
 import 'package:emall_adminpanel/SettingsAndVariables/Variables.dart';
 import 'package:http/http.dart' as http;
 
-Future<bool> Sales() async {
+Future<bool> AdminSales() async {
   var response = await http.get(
     Uri.parse(ViewSalesUrl),
     headers: {

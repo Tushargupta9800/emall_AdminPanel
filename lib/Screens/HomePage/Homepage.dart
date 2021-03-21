@@ -5,7 +5,10 @@ import 'package:emall_adminpanel/Api/Products/orders.dart';
 import 'package:emall_adminpanel/Api/Secrets/Secrets.dart';
 import 'package:emall_adminpanel/Api/SubCategory/SubCategory.dart';
 import 'package:emall_adminpanel/Api/Venders/Validation.dart';
+import 'package:emall_adminpanel/Screens/HomePage/DrawerPages/Orders.dart';
+import 'package:emall_adminpanel/Screens/HomePage/DrawerPages/Sales.dart';
 import 'package:emall_adminpanel/Screens/HomePage/DrawerPages/Validation.dart';
+import 'package:emall_adminpanel/Screens/HomePage/DrawerPages/VenderPayments.dart';
 import 'package:emall_adminpanel/Screens/Others/Loading.dart';
 import 'package:emall_adminpanel/SettingsAndVariables/Settings.dart';
 import 'package:emall_adminpanel/SettingsAndVariables/Toast/ToastMessages.dart';
@@ -66,7 +69,7 @@ class _HomePageState extends State<HomePage> {
 
           else if(Where == SalesSubPageCode){
             setState(() {loading = true;
-              Sales().then((value) {
+              AdminSales().then((value) {
                 setState(() {loading = false;});});});}
 
           else if(Where == OrderSubPageCode){
@@ -194,7 +197,7 @@ class _HomePageState extends State<HomePage> {
                     Container(
                       width: MediaQuery.of(context).size.width-200,
                       height: MediaQuery.of(context).size.height,
-                      child: Validation(),
+                      child: Sales(),
                     ),
                   ],
                 ),

@@ -144,6 +144,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             onTap: () async {
                               setState(() {
                                 loading = true;
+                              });
                                 if(_ValidateCredentials()){
                                   //after login
                                   AuthAdmin(PasswordController.text).then((value){
@@ -153,9 +154,9 @@ class _LoginScreenState extends State<LoginScreen> {
                                   });
                                 }
                                 else{
+                                  setState((){loading = false;});
                                   ShowToast("What The Hack you just type", context);
                                 }
-                              });
                             },
                             child: Container(
                               padding: EdgeInsets.all(10.0),

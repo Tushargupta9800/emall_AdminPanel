@@ -200,7 +200,7 @@ class _ValidationState extends State<Validation> {
 
         PersonalInfo = "Name: " + AllVendersList[index].Name + " \n" +
             "Email: " + AllVendersList[index].Email + " \n" +
-            "Mobile: " + AllVendersList[index].Mobile + " \n " +
+            "Mobile: " + AllVendersList[index].Mobile + " \n" +
             "ID: " + AllVendersList[index].ID + " \n";
 
         ShopInfo = "ShopName: " + AllVendersList[index].Name + " \n" +
@@ -212,7 +212,7 @@ class _ValidationState extends State<Validation> {
 
         BankInfo = "BankHolder Name: " + AllVendersList[index].BankHoldername + " \n" +
             "Account Number: " + AllVendersList[index].AccountNumber + " \n" +
-            "IBan: " + AllVendersList[index].IBan + " \n " +
+            "IBan: " + AllVendersList[index].IBan + " \n" +
             "BankName: " + AllVendersList[index].BankName + " \n";
 
         if(ThisText == "All") data = PersonalInfo + ShopInfo + BankInfo;
