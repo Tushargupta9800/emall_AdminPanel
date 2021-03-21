@@ -21,12 +21,13 @@ Future<bool> GetAllNonValdatingVenders() async {
     for(var ven in res["data"]) {
       VenderModel Vender = VenderModel();
       Vender.Validation = ven["validation"];
-      Vender.Token = res["token"];
       Vender.step1Completed(
           ven["name"],
           ven["email"],
           ven["password"],
-          ven["Mobile"]);
+          ven["Mobile"],
+          ven["_id"]
+      );
       Vender.step2Completed(
           ven["Shop_Details"]["shopname"],
           ven["Shop_Details"]["address"],

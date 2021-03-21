@@ -10,7 +10,7 @@ class VenderModel{
   String Mobile;
   List<int> ProfilePic = [];
   MemoryImage ProfilePicImage;
-  String Token;
+  String ID;
 
   String Shopname;
   String Address;
@@ -30,11 +30,12 @@ class VenderModel{
 
   bool Validation = false;
 
-  void step1Completed(String NAME, String EMAIL, String PASSWORD,String Number){
+  void step1Completed(String NAME, String EMAIL, String PASSWORD,String Number,String Id){
     this.Name = NAME;
     this.Email = EMAIL;
     this.Password = PASSWORD;
     this.Mobile = Number;
+    this.ID = Id;
   }
 
   void step2Completed(String SHOPNAME,String AdDDRESS, String CITY, String POSTLCODE, String STATE, String COUNTRY){
