@@ -8,6 +8,7 @@ import 'package:emall_adminpanel/SettingsAndVariables/Variables.dart';
 import 'package:emall_adminpanel/localization/Variables/Language_Codes.dart';
 import 'package:emall_adminpanel/localization/code/Language_Constraints.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:horizontal_data_table/horizontal_data_table.dart';
 
 class VenderPayments extends StatefulWidget {
@@ -122,7 +123,7 @@ class _VenderPaymentsState extends State<VenderPayments> {
   Widget _generateRightHandSideColumnRow(BuildContext context, int index) {
     return Row(
       children: <Widget>[
-        _OrderComplition(AllVenderPaymentLeftList[index].VenderId,AllVenderPaymentLeftList[index].ID),
+        _OrderComplition(AllVenderPaymentLeftList[index].VenderId,AllVenderPaymentLeftList[index].ID,AllVenderPaymentLeftList[index].ProductPrice),
         _CopyTheData("All", index),
         _CopyTheData("Price", index),
         _dataTableBlock(AllVenderPaymentLeftList[index].TransactionId,200),
@@ -169,10 +170,10 @@ class _VenderPaymentsState extends State<VenderPayments> {
     );
   }
 
-  Widget _OrderComplition(String ID,String orderId){
+  Widget _OrderComplition(String ID,String orderId,double charges){
     return InkWell(
       onTap: () async {
-        getAllVenderInfo(ID,orderId);
+        getAllVenderInfo(ID,orderId,charges);
       },
       child: Container(
         width: 200,
@@ -273,7 +274,7 @@ class _VenderPaymentsState extends State<VenderPayments> {
     );
   }
 
-  void getAllVenderInfo(String VenderId,String id){
+  void getAllVenderInfo(String VenderId,String id,double charges){
 
     setState(() {isShowing = true;});
 
@@ -284,6 +285,7 @@ class _VenderPaymentsState extends State<VenderPayments> {
           bool isAdding = false;
           return  StatefulBuilder(
               builder: (context,setState){
+                getFinalCharges(charges);
                 if(isShowing){
                   GetInfo(VenderId).then((value){
                     if(this.mounted)
@@ -306,6 +308,48 @@ class _VenderPaymentsState extends State<VenderPayments> {
                   Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
+                      PrintVenderBankInfo(Translate(context, NameLanguageCode),PayToThisVender.Name),
+                      PrintVenderBankInfo(Translate(context, ProductPriceLanguageCode),charges.toString() + " SAR"),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Row(
+                            children: [
+                              Text(Translate(context, TaxLanguageCode) + ": "),
+                              Container(
+                                width: 50,
+                                height: 30,
+                                child: TextField(
+                                  onChanged: (val){
+                                    if(double.parse(val) > 100) TaxController.text = 100.toString();
+                                    setState((){getFinalCharges(charges);});
+                                  },
+                                  style: TextStyle(
+                                    fontSize: 15
+                                  ),
+                                  controller: TaxController,
+                                  keyboardType:TextInputType.numberWithOptions(decimal: true),
+                                  inputFormatters: <TextInputFormatter>[
+                                    FilteringTextInputFormatter.allow(RegExp(r'^(\d+)?\.?\d{0,2}'))
+                                  ],
+                                  decoration: InputDecoration(
+                                    contentPadding:
+                                    EdgeInsets.only(bottom: 15,left: 5,right: 5),
+                                  ),
+                                ),
+                              ),
+                              Text("% : " + FinalCharges + " SAR"),
+                            ],
+                          ),
+                          SizedBox(width: 10,),
+                          InkWell(
+                            onTap: (){
+                              FlutterClipboard.copy(FinalCharges).then((value) => ShowToast(Translate(context, CopiedLanguageCode), context));
+                            },
+                            child: Icon(Icons.copy),
+                          ),
+                        ],
+                      ),
                       PrintVenderBankInfo(Translate(context, NameLanguageCode),PayToThisVender.Name),
                       PrintVenderBankInfo(Translate(context, IDLanguageCode),PayToThisVender.ID),
                       PrintVenderBankInfo(Translate(context, MobileLanguageCode),PayToThisVender.Mobile),
@@ -353,6 +397,9 @@ class _VenderPaymentsState extends State<VenderPayments> {
         }
     );
   }
+
+  void getFinalCharges(double charges) =>
+    FinalCharges = (charges - ((double.parse(TaxController.text)/100)*charges)).toStringAsFixed(2);
 
   Widget PrintVenderBankInfo(String text1,String text){
     return Row(

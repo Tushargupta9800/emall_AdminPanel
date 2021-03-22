@@ -28,6 +28,8 @@ List<OrderModel> AllVenderPaymentLeftList = [];
 List<OrderModel> AllCompletedOrderList = [];
 
 VenderModel PayToThisVender = VenderModel();
+TextEditingController TaxController = TextEditingController();
+String FinalCharges;
 
 String HeroTag = "";
 MemoryImage HeroImage;

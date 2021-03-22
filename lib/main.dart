@@ -58,7 +58,7 @@ class _MyAppState extends State<MyApp> {
     } else
       return MaterialApp(
         debugShowCheckedModeBanner: false,
-        title: "Emall Customer",
+        title: "Emall Admin Panel",
         supportedLocales: [
           Locale('en', 'US'),
           Locale('ar', 'SA'),

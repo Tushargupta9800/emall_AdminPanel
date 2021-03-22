@@ -30,6 +30,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   initState(){
+    TaxController.text = "10.0";
     super.initState();
   }
 
