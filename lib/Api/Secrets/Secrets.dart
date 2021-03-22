@@ -7,8 +7,10 @@ String LoginUrl = DomainUrl + "/api/adminpanel/checkadminpassword";
 
 String CategoryUrl = DomainUrl + "/api/get/get/category";
 String AddCategoryUrl = DomainUrl + "api/addproduct/add/category/"; //+ english/arabic
+String DeleyteCategoryUrl = DomainUrl + "/api/add/delete/category";
 String SubCategoryUrl = DomainUrl + "/api/get/get/subcategory";
-String AddSubCategoriesUrl = DomainUrl + "/api/addproduct/add/subcategory/";
+String AddSubCategoriesUrl = DomainUrl + "/api/addproduct/add/subcategory/"; //+english/arabic
+String DeleteSubCategoryUrl = DomainUrl + "/api/addsub/delete/subcategory";
 
 String UserPaymentDoneUrl = DomainUrl + "/api/payment/userpayment"; //{order_id: “string”}
 String CustomerPaymentDoneUrl = DomainUrl + "/api/payment/customerpayment"; //{order_id: “string”}
@@ -22,5 +24,3 @@ String ValidateTheUserUrl = DomainUrl + "/api/validate/validatingvenders/"; //id
 
 String CustomerPaymentConfirmationUrl = DomainUrl + "/api/payment/customerpayment";
 String VenderPaymentConfirmUrl = DomainUrl + "/api/payment/userpayment";
-
-String DeleteSubCategoryUrl = DomainUrl + "";

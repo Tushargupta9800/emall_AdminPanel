@@ -25,6 +25,7 @@ Future<bool> AllOrders() async {
       newOrder.getAmounts();
       AllOrdersList.add(newOrder);
     }
+    return true;
   }
 
   return false;

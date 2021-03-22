@@ -3,6 +3,7 @@ import 'package:emall_adminpanel/Api/Products/HalfCompleted.dart';
 import 'package:emall_adminpanel/Api/Products/Sales.dart';
 import 'package:emall_adminpanel/Api/Products/orders.dart';
 import 'package:emall_adminpanel/Api/Secrets/Secrets.dart';
+import 'package:emall_adminpanel/Api/SubCategory/DeleteSubCategory.dart';
 import 'package:emall_adminpanel/Api/SubCategory/SubCategory.dart';
 import 'package:emall_adminpanel/Api/Venders/Validation.dart';
 import 'package:emall_adminpanel/Screens/HomePage/DrawerPages/Orders.dart';
@@ -33,6 +34,7 @@ class _HomePageState extends State<HomePage> {
   TextEditingController EnglishController = TextEditingController();
   TextEditingController ArabicController = TextEditingController();
   bool loading = true;
+  bool isDeleting = false;
 
   Widget DrawerTile(String text,String Where){
 
@@ -282,7 +284,8 @@ class _HomePageState extends State<HomePage> {
                       Text(AllSubCategoryList[i].SubCategory),
                       InkWell(
                         onTap: (){
-
+                          Navigator.of(context).pop();
+                          ShowDialog(AllSubCategoryList[i].id);
                         },
                         child: Icon(Icons.delete),
                       ),
@@ -324,6 +327,61 @@ class _HomePageState extends State<HomePage> {
                 child: Text('Add'),
               ),
             ],
+          );
+        }
+    );
+  }
+
+  void ShowDialog(String id){
+
+    if(isDeleting)
+      DeleteSubCategory(id).then((value){
+        if(value){
+          ShowToast("SubCategory Deleted", context);
+          setState(() {isDeleting = false;});
+          Navigator.of(context).pop();
+        }
+        else{
+          setState(() {isDeleting = false;});
+          ShowToast("Error in Deleting", context);
+          Navigator.of(context).pop();
+        }
+      });
+
+    showDialog(
+        barrierDismissible: false,
+        context: context,
+        builder: (BuildContext context){
+          return  AlertDialog(
+            title: Column(
+              children: [
+                (!isDeleting)?
+                Text('Press Ok To Delete SubCategory'):
+                Text('Wait loading...'),
+              ],
+            ),
+            content: (isDeleting)?Container(
+              width: 50,
+              height: 50,
+              child: Center(child: CircularProgressIndicator(),),
+            ):
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                TextButton(
+                  onPressed: () => Navigator.of(context).pop(),
+                  child: Text('Cancel'),
+                ),
+                TextButton(
+                  onPressed: (){
+                    setState(() {isDeleting = true;});
+                    Navigator.of(context).pop();
+                    ShowDialog(id);
+                  },
+                  child: Text('Ok'),
+                )
+              ],
+            ),
           );
         }
     );
