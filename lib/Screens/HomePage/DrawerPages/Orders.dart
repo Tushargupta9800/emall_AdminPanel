@@ -296,7 +296,9 @@ class _OrdersState extends State<Orders> {
           return  AlertDialog(
             title: Column(
               children: [
-                Text('Press Ok To Mark Complete'),
+                (isCompleted)?
+                Text('Press Ok To Mark Complete'):
+                Text('Wait loading...'),
               ],
             ),
             content: (isCompleted)?Container(

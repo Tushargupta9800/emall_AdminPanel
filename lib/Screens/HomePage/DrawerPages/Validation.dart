@@ -280,7 +280,9 @@ class _ValidationState extends State<Validation> {
           return  AlertDialog(
             title: Column(
               children: [
-                Text('Press Ok To Validate User'),
+                (isValidating)?
+                Text('Press Ok To Validate User'):
+                Text('Wait Loading...'),
               ],
             ),
             content: (isValidating)?Container(
