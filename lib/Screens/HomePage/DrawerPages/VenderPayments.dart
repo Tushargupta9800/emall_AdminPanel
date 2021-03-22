@@ -1,5 +1,7 @@
 import 'package:clipboard/clipboard.dart';
 import 'package:emall_adminpanel/Api/Products/HalfCompleted.dart';
+import 'package:emall_adminpanel/Api/Venders/DonePayment.dart';
+import 'package:emall_adminpanel/Api/Venders/GetInfo.dart';
 import 'package:emall_adminpanel/SettingsAndVariables/Settings.dart';
 import 'package:emall_adminpanel/SettingsAndVariables/Toast/ToastMessages.dart';
 import 'package:emall_adminpanel/SettingsAndVariables/Variables.dart';
@@ -13,6 +15,7 @@ class VenderPayments extends StatefulWidget {
 
 class _VenderPaymentsState extends State<VenderPayments> {
   HDTRefreshController _hdtRefreshController = HDTRefreshController();
+  bool isShowing = true;
 
   @override
   void initState() {
@@ -116,7 +119,7 @@ class _VenderPaymentsState extends State<VenderPayments> {
   Widget _generateRightHandSideColumnRow(BuildContext context, int index) {
     return Row(
       children: <Widget>[
-        _OrderComplition(AllVenderPaymentLeftList[index].ID),
+        _OrderComplition(AllVenderPaymentLeftList[index].VenderId,AllVenderPaymentLeftList[index].ID),
         _CopyTheData("All", index),
         _CopyTheData("Price", index),
         _dataTableBlock(AllVenderPaymentLeftList[index].TransactionId,200),
@@ -163,10 +166,10 @@ class _VenderPaymentsState extends State<VenderPayments> {
     );
   }
 
-  Widget _OrderComplition(String ID){
+  Widget _OrderComplition(String ID,String orderId){
     return InkWell(
       onTap: () async {
-
+        getAllVenderInfo(ID,orderId);
       },
       child: Container(
         width: 200,
@@ -266,4 +269,105 @@ class _VenderPaymentsState extends State<VenderPayments> {
       ),
     );
   }
+
+  void getAllVenderInfo(String VenderId,String id){
+
+    setState(() {isShowing = true;});
+
+    showDialog(
+        barrierDismissible: false,
+        context: context,
+        builder: (context){
+          bool isAdding = false;
+          return  StatefulBuilder(
+              builder: (context,setState){
+                if(isShowing){
+                  GetInfo(VenderId).then((value){
+                    setState(() {isShowing = false;});
+                  });
+                }
+                return AlertDialog(
+                  title: Column(
+                    children: [
+                      (!isAdding && !isShowing)?
+                      Text('Press Ok To Mark Payment Sent'):
+                      Text('Wait loading...'),
+                    ],
+                  ),
+                  content: (isAdding || isShowing)?Container(
+                    width: 50,
+                    height: 50,
+                    child: Center(child: CircularProgressIndicator(),),
+                  ):
+                  Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      PrintVenderBankInfo("Name",PayToThisVender.Name),
+                      PrintVenderBankInfo("ID",PayToThisVender.ID),
+                      PrintVenderBankInfo("Mobile",PayToThisVender.Mobile),
+                      PrintVenderBankInfo("Email",PayToThisVender.Email),
+                      PrintVenderBankInfo("Bank Holder Name",PayToThisVender.BankHoldername),
+                      PrintVenderBankInfo("BankName", PayToThisVender.BankName),
+                      PrintVenderBankInfo("Account Number", PayToThisVender.AccountNumber),
+                      PrintVenderBankInfo("IBan", PayToThisVender.IBan),
+
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          TextButton(
+                            onPressed: () => Navigator.of(context).pop(),
+                            child: Text('Cancel'),
+                          ),
+                          TextButton(
+                            onPressed: (){
+                              setState(() {isAdding = true;});
+                              MarkVenderPaymentComplete(id).then((value){
+                                if(value){
+                                  HalfCompleted().then((value) {
+                                    if(value) ShowToast("Done Marking", context);
+                                    else ShowToast("Error Reloading", context);
+                                    setState((){});
+                                    Navigator.of(context).pop();
+                                  });
+                                }
+                                else{
+                                  Navigator.of(context).pop();
+                                  ShowToast("Error in marking", context);
+                                }
+                              });
+                            },
+                            child: Text('Ok'),
+                          )
+                        ],
+                      ),
+                    ],
+                  ),
+                );
+              }
+          );
+        }
+    );
+  }
+
+  Widget PrintVenderBankInfo(String text1,String text){
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Row(
+          children: [
+            Text(text1 + ": "),
+            Text(text),
+          ],
+        ),
+        SizedBox(width: 10,),
+        InkWell(
+          onTap: (){
+            FlutterClipboard.copy(text).then((value) => ShowToast("Copied", context));
+          },
+          child: Icon(Icons.copy),
+        ),
+      ],
+    );
+  }
+
 }

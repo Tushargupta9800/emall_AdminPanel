@@ -27,5 +27,7 @@ List<OrderModel> AllOrdersList = [];
 List<OrderModel> AllVenderPaymentLeftList = [];
 List<OrderModel> AllCompletedOrderList = [];
 
+VenderModel PayToThisVender = VenderModel();
+
 String HeroTag = "";
 MemoryImage HeroImage;

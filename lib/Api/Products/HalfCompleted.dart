@@ -25,6 +25,7 @@ Future<bool> HalfCompleted() async {
       newOrder.getAmounts();
       AllVenderPaymentLeftList.add(newOrder);
     }
+    return true;
   }
 
   return false;

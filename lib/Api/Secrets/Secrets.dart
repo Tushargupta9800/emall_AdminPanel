@@ -21,6 +21,7 @@ String IncompleteOrdersUrl = DomainUrl  + "/api/adminpanel/incompleteorder";
 
 String GetAllNonvalidateUsersUrl = DomainUrl + "/api/tobevalidate/unvalidatevenders";
 String ValidateTheUserUrl = DomainUrl + "/api/validate/validatingvenders/"; //id
+String GetInfoOfVenderUrl = DomainUrl + "/api/adminpanel/getvenderinfo";
 
 String CustomerPaymentConfirmationUrl = DomainUrl + "/api/payment/customerpayment";
 String VenderPaymentConfirmUrl = DomainUrl + "/api/payment/userpayment";
