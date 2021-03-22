@@ -10,6 +10,7 @@ import 'package:emall_adminpanel/Screens/HomePage/DrawerPages/Orders.dart';
 import 'package:emall_adminpanel/Screens/HomePage/DrawerPages/Sales.dart';
 import 'package:emall_adminpanel/Screens/HomePage/DrawerPages/Validation.dart';
 import 'package:emall_adminpanel/Screens/HomePage/DrawerPages/VenderPayments.dart';
+import 'package:emall_adminpanel/Screens/Others/AlertDialogs.dart';
 import 'package:emall_adminpanel/Screens/Others/Loading.dart';
 import 'package:emall_adminpanel/SettingsAndVariables/Settings.dart';
 import 'package:emall_adminpanel/SettingsAndVariables/Toast/ToastMessages.dart';
@@ -60,6 +61,7 @@ class _HomePageState extends State<HomePage> {
       child: InkWell(
         onTap: () {
           if (Where == DeliveryChargesSubPageCode) {
+            DeliveryChargesController.clear();
             setState(() {loading = true;});
             GetDeliveryCharges().then((value) {
             if (value != -1) ShowDialogForCharges(value);
@@ -90,6 +92,8 @@ class _HomePageState extends State<HomePage> {
               setState(() {loading = false;});});}
 
           else if(Where == NewSubCategorySubPageCode){
+            EnglishController.clear();
+            ArabicController.clear();
             setState(() {loading = true;});
             AllSubCategories().then((value){
               if(value) ShowDialogForSubCategory();
@@ -273,45 +277,51 @@ class _HomePageState extends State<HomePage> {
         builder: (BuildContext context){
           return  AlertDialog(
             title: Text('SubCategories'),
-            content: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
+            content: Container(
+              height: MediaQuery.of(context).size.height/2,
+              child: SingleChildScrollView(
+                scrollDirection: Axis.vertical,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
 
-                for(int i=0;i<AllSubCategoryList.length;i++)
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(AllSubCategoryList[i].SubCategory),
-                      InkWell(
-                        onTap: (){
-                          Navigator.of(context).pop();
-                          ShowDialog(AllSubCategoryList[i].id);
-                        },
-                        child: Icon(Icons.delete),
+                    for(int i=0;i<AllSubCategoryList.length;i++)
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(AllSubCategoryList[i].SubCategory),
+                          InkWell(
+                            onTap: (){
+                              Navigator.of(context).pop();
+                              ShowDialog(AllSubCategoryList[i].id);
+                            },
+                            child: Icon(Icons.delete),
+                          ),
+                        ],
                       ),
-                    ],
-                  ),
-                SizedBox(height: 10,),
-                Text('New SubCategory'),
-                TextField(
-                  controller: EnglishController,
-                  textDirection: TextDirection.ltr,
-                  decoration: InputDecoration(
-                    hintText: "In English",
-                    contentPadding:
-                    EdgeInsets.only(left: 15, bottom: 11, top: 11, right: 15),
-                  ),
+                    SizedBox(height: 10,),
+                    Text('New SubCategory'),
+                    TextField(
+                      controller: EnglishController,
+                      textDirection: TextDirection.ltr,
+                      decoration: InputDecoration(
+                        hintText: "In English",
+                        contentPadding:
+                        EdgeInsets.only(left: 15, bottom: 11, top: 11, right: 15),
+                      ),
+                    ),
+                    TextField(
+                      controller: ArabicController,
+                      textDirection: TextDirection.rtl,
+                      decoration: InputDecoration(
+                        hintText: "In Arabic",
+                        contentPadding:
+                        EdgeInsets.only(left: 15, bottom: 11, top: 11, right: 15),
+                      ),
+                    ),
+                  ],
                 ),
-                TextField(
-                  controller: ArabicController,
-                  textDirection: TextDirection.rtl,
-                  decoration: InputDecoration(
-                    hintText: "In Arabic",
-                    contentPadding:
-                    EdgeInsets.only(left: 15, bottom: 11, top: 11, right: 15),
-                  ),
-                ),
-              ],
+              ),
             ),
             actions: [
               TextButton(
@@ -322,7 +332,7 @@ class _HomePageState extends State<HomePage> {
                 onPressed: (){
                   Navigator.of(context).pop();
                   if(ArabicController.text.length > 0  && EnglishController.text.length > 0)
-                  launch(AddSubCategoriesUrl + EnglishController.text + "/" + ArabicController.text);
+                    AddSubCategoryDialog(AddSubCategoriesUrl + EnglishController.text + "/" + ArabicController.text,context);
                 },
                 child: Text('Add'),
               ),
