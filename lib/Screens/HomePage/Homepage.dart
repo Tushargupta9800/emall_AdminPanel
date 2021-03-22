@@ -26,12 +26,13 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
 
   String hover = "";
+  String SubPageCode = ValidationSubPagecode;
   var color = Colors.blue[800];
   String DeliveryCharges = "0.0";
   TextEditingController DeliveryChargesController = TextEditingController();
   TextEditingController EnglishController = TextEditingController();
   TextEditingController ArabicController = TextEditingController();
-  bool loading = false;
+  bool loading = true;
 
   Widget DrawerTile(String text,String Where){
 
@@ -63,21 +64,25 @@ class _HomePageState extends State<HomePage> {
             else ShowToast("Error", context);});}
 
           else if(Where == VenderPaymentSubPageCode) {
+            setState(() {SubPageCode = VenderPaymentSubPageCode;});
             setState(() {loading = true;
               HalfCompleted().then((value) {
                 setState(() {loading = false;});});});}
 
           else if(Where == SalesSubPageCode){
+            setState(() {SubPageCode = SalesSubPageCode;});
             setState(() {loading = true;
               AdminSales().then((value) {
                 setState(() {loading = false;});});});}
 
           else if(Where == OrderSubPageCode){
+            setState(() {SubPageCode = OrderSubPageCode;});
             setState(() {loading = true;
               AllOrders().then((value) {
                 setState(() {loading = false;});});});}
 
           else if(Where == ValidationSubPagecode){
+            setState(() {SubPageCode = ValidationSubPagecode;});
             setState(() {loading = true;});
             GetAllNonValdatingVenders().then((value){
               setState(() {loading = false;});});}
@@ -112,7 +117,11 @@ class _HomePageState extends State<HomePage> {
                     style: TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.w500,
-                      color: White,
+                      color: (
+                          (Where == ValidationSubPagecode && SubPageCode == ValidationSubPagecode) ||
+                          (Where == OrderSubPageCode && SubPageCode == OrderSubPageCode) ||
+                          (Where == SalesSubPageCode && SubPageCode == SalesSubPageCode) ||
+                          (Where == VenderPaymentSubPageCode && SubPageCode == VenderPaymentSubPageCode))?Grey:White,
                     ),
                   ),
                   (Where == LanguageSubPageCode)?Text("  " + AppLanguage):Container(width: 0,)
@@ -129,6 +138,13 @@ class _HomePageState extends State<HomePage> {
         ),
       ),
     );
+  }
+
+  @override
+  void initState() {
+    GetAllNonValdatingVenders().then((value){
+      setState(() {loading = false;});});
+    super.initState();
   }
 
   @override
@@ -197,7 +213,7 @@ class _HomePageState extends State<HomePage> {
                     Container(
                       width: MediaQuery.of(context).size.width-200,
                       height: MediaQuery.of(context).size.height,
-                      child: Sales(),
+                      child: ReturnTheSubPage(SubPageCode),
                     ),
                   ],
                 ),
@@ -312,4 +328,12 @@ class _HomePageState extends State<HomePage> {
         }
     );
   }
+
+  Widget ReturnTheSubPage(String Code){
+    if(Code == ValidationSubPagecode) return Validation();
+    else if(Code == OrderSubPageCode) return Orders();
+    else if(Code == VenderPaymentSubPageCode) return VenderPayments();
+    else return Sales();
+  }
+
 }
