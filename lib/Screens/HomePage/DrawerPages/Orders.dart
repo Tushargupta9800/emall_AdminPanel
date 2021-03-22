@@ -1,4 +1,5 @@
 import 'package:clipboard/clipboard.dart';
+import 'package:emall_adminpanel/Api/Products/OrderCompleted.dart';
 import 'package:emall_adminpanel/Api/Products/orders.dart';
 import 'package:emall_adminpanel/Api/Secrets/Secrets.dart';
 import 'package:emall_adminpanel/SettingsAndVariables/Settings.dart';
@@ -14,6 +15,7 @@ class Orders extends StatefulWidget {
 
 class _OrdersState extends State<Orders> {
   HDTRefreshController _hdtRefreshController = HDTRefreshController();
+  bool isCompleted = false;
 
   @override
   void initState() {
@@ -167,7 +169,7 @@ class _OrdersState extends State<Orders> {
   Widget _OrderComplition(String ID){
     return InkWell(
       onTap: () async {
-
+        ShowDialog(ID);
       },
       child: Container(
         width: 200,
@@ -267,4 +269,61 @@ class _OrdersState extends State<Orders> {
       ),
     );
   }
+
+  void ShowDialog(String id){
+
+    if(isCompleted)
+      MarkOrderComplete(id).then((value){
+        if(value){
+          AllOrders().then((value){
+            if(value) ShowToast("Order Mark Complete", context);
+            else ShowToast("Error in Reloading", context);
+            setState(() {isCompleted = false;});
+            Navigator.of(context).pop();
+          });
+        }
+        else{
+          setState(() {isCompleted = false;});
+          ShowToast("Error in Marking", context);
+          Navigator.of(context).pop();
+        }
+      });
+
+    showDialog(
+        barrierDismissible: false,
+        context: context,
+        builder: (BuildContext context){
+          return  AlertDialog(
+            title: Column(
+              children: [
+                Text('Press Ok To Mark Complete'),
+              ],
+            ),
+            content: (isCompleted)?Container(
+              width: 50,
+              height: 50,
+              child: Center(child: CircularProgressIndicator(),),
+            ):
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                TextButton(
+                  onPressed: () => Navigator.of(context).pop(),
+                  child: Text('Cancel'),
+                ),
+                TextButton(
+                  onPressed: (){
+                    setState(() {isCompleted = true;});
+                    Navigator.of(context).pop();
+                    ShowDialog(id);
+                  },
+                  child: Text('Ok'),
+                )
+              ],
+            ),
+          );
+        }
+    );
+  }
+
 }

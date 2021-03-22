@@ -1,6 +1,7 @@
 import 'dart:ui';
 import 'package:clipboard/clipboard.dart';
 import 'package:emall_adminpanel/Api/Secrets/Secrets.dart';
+import 'package:emall_adminpanel/Api/Venders/MarkValidate.dart';
 import 'package:emall_adminpanel/Api/Venders/Validation.dart';
 import 'package:emall_adminpanel/SettingsAndVariables/Toast/ToastMessages.dart';
 import 'package:emall_adminpanel/SettingsAndVariables/Variables.dart';
@@ -17,6 +18,7 @@ class Validation extends StatefulWidget {
 class _ValidationState extends State<Validation> {
 
   HDTRefreshController _hdtRefreshController = HDTRefreshController();
+  bool isValidating = false;
 
   @override
   void initState() {
@@ -148,8 +150,9 @@ class _ValidationState extends State<Validation> {
   Widget _ValidateUser(String ID){
     return InkWell(
       onTap: () async {
-        await launch(ValidateTheUserUrl + ID);
-        GetAllNonValdatingVenders().then((value) {setState(() {});});
+        ShowDialog(ID);
+        // await launch(ValidateTheUserUrl + ID);
+        // GetAllNonValdatingVenders().then((value) {setState(() {});});
       },
       child: Container(
         width: 100,
@@ -247,6 +250,63 @@ class _ValidationState extends State<Validation> {
         padding: EdgeInsets.fromLTRB(5, 0, 0, 0),
         alignment: Alignment.centerLeft,
       ),
+    );
+  }
+
+
+  void ShowDialog(String id){
+
+    if(isValidating)
+    MarkVenderValidate(id).then((value){
+      if(value){
+        GetAllNonValdatingVenders().then((value){
+          if(value) ShowToast("Validation Complete", context);
+          else ShowToast("Error in Reloading", context);
+          setState(() {isValidating = false;});
+          Navigator.of(context).pop();
+        });
+      }
+      else{
+        setState(() {isValidating = false;});
+        ShowToast("Error in Validating", context);
+        Navigator.of(context).pop();
+      }
+    });
+
+    showDialog(
+      barrierDismissible: false,
+        context: context,
+        builder: (BuildContext context){
+          return  AlertDialog(
+            title: Column(
+              children: [
+                Text('Press Ok To Validate User'),
+              ],
+            ),
+            content: (isValidating)?Container(
+              width: 50,
+                height: 50,
+                child: Center(child: CircularProgressIndicator(),),
+            ):
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                TextButton(
+                  onPressed: () => Navigator.of(context).pop(),
+                  child: Text('Cancel'),
+                ),
+                TextButton(
+                  onPressed: (){
+                    setState(() {isValidating = true;});
+                    Navigator.of(context).pop();
+                    ShowDialog(id);
+                  },
+                  child: Text('Ok'),
+                )
+              ],
+            ),
+          );
+        }
     );
   }
 
