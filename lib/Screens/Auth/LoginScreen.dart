@@ -3,6 +3,8 @@ import 'package:emall_adminpanel/Screens/Others/Loading.dart';
 import 'package:emall_adminpanel/SettingsAndVariables/Toast/ToastMessages.dart';
 import 'package:emall_adminpanel/SettingsAndVariables/Variables.dart';
 import 'package:emall_adminpanel/SettingsAndVariables/routes/RouteCodes.dart';
+import 'package:emall_adminpanel/localization/Variables/Language_Codes.dart';
+import 'package:emall_adminpanel/localization/code/Language_Constraints.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -65,7 +67,7 @@ class _LoginScreenState extends State<LoginScreen> {
               suffixIcon: InkWell(
                 onTap: (){
                   FocusScope.of(context).requestFocus(new FocusNode());
-                  if(text == "Password"){
+                  if(text == Translate(context, PasswordLanguageCode)){
                     setState(() {
                       if(passwordobscure) PasswordIcon = Icon(Icons.lock_open);
                       else PasswordIcon = Icon(Icons.lock_outline);
@@ -128,7 +130,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Center(child: Text("Login",
+                        Center(child: Text(Translate(context, LoginLanguageCode),
                           style: TextStyle(
                             fontSize: 25,
                             fontWeight: FontWeight.w500,
@@ -136,8 +138,8 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                         )),
                         SizedBox(height: 10.0,),
-                        InputText("Email", EmailController,TextInputType.emailAddress,false,Icon(Icons.email)),
-                        InputText("Password", PasswordController,TextInputType.text,passwordobscure,PasswordIcon),
+                        InputText(Translate(context, EmailLanguageCode), EmailController,TextInputType.emailAddress,false,Icon(Icons.email)),
+                        InputText(Translate(context, PasswordLanguageCode), PasswordController,TextInputType.text,passwordobscure,PasswordIcon),
                         SizedBox(height: 10.0,),
                         Center(
                           child: GestureDetector(
@@ -150,12 +152,12 @@ class _LoginScreenState extends State<LoginScreen> {
                                   AuthAdmin(PasswordController.text).then((value){
                                     setState(() {loading = false;});
                                     if(value) Navigator.popAndPushNamed(context, HomePageRouteCode);
-                                    else ShowToast("Wrong Password", context);
+                                    else ShowToast(Translate(context, WrongPasswordLanguageCode), context);
                                   });
                                 }
                                 else{
                                   setState((){loading = false;});
-                                  ShowToast("What The Hack you just type", context);
+                                  ShowToast(Translate(context, ErrorTryAgainLanguageCode), context);
                                 }
                             },
                             child: Container(
@@ -168,7 +170,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                   blurRadius: 5.0,
                                 ),],
                               ),
-                              child: Text("Login",
+                              child: Text(Translate(context, LoginLanguageCode),
                                 style: TextStyle(
                                   fontSize: 15,
                                   fontWeight: FontWeight.w500,

@@ -6,6 +6,8 @@ import 'package:emall_adminpanel/Api/Venders/Validation.dart';
 import 'package:emall_adminpanel/SettingsAndVariables/Toast/ToastMessages.dart';
 import 'package:emall_adminpanel/SettingsAndVariables/Variables.dart';
 import 'package:emall_adminpanel/SettingsAndVariables/routes/RouteCodes.dart';
+import 'package:emall_adminpanel/localization/Variables/Language_Codes.dart';
+import 'package:emall_adminpanel/localization/code/Language_Constraints.dart';
 import 'package:flutter/material.dart';
 import 'package:horizontal_data_table/horizontal_data_table.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -61,27 +63,27 @@ class _ValidationState extends State<Validation> {
 
   List<Widget> _getTitleWidget() {
     return [
-      _getTitleItemWidget('ID', 200),
-      _getTitleItemWidget('Validation', 100),
-      _getTitleItemWidget('All Info', 100),
-      _getTitleItemWidget('Name', 100),
-      _getTitleItemWidget('Email',200),
-      _getTitleItemWidget('VAT',100),
-      _getTitleItemWidget('CR',100),
-      _getTitleItemWidget('Profile', 100),
-      _getTitleItemWidget('Shop Info', 100),
-      _getTitleItemWidget('Mobile', 100),
-      _getTitleItemWidget('ShopName', 100),
-      _getTitleItemWidget('Address', 100),
-      _getTitleItemWidget('City', 100),
-      _getTitleItemWidget('Postal Code', 100),
-      _getTitleItemWidget('State', 100),
-      _getTitleItemWidget('Country', 100),
-      _getTitleItemWidget('Bank Info', 100),
-      _getTitleItemWidget('BankHolder Name', 150),
-      _getTitleItemWidget('Account Number', 150),
-      _getTitleItemWidget('IBan', 150),
-      _getTitleItemWidget('BankName', 100),
+      _getTitleItemWidget(Translate(context, IDLanguageCode), 200),
+      _getTitleItemWidget(Translate(context, ValidationLanguageCode), 100),
+      _getTitleItemWidget(Translate(context, AllInfoLanguageCode), 100),
+      _getTitleItemWidget(Translate(context, NameLanguageCode), 100),
+      _getTitleItemWidget(Translate(context, EmailLanguageCode),200),
+      _getTitleItemWidget(Translate(context, VATLanguageCode),100),
+      _getTitleItemWidget(Translate(context, CRLanguageCode),100),
+      _getTitleItemWidget(Translate(context, ProfileLanguageCode), 100),
+      _getTitleItemWidget(Translate(context, ShopInfoLanguageCode), 100),
+      _getTitleItemWidget(Translate(context, MobileLanguageCode), 100),
+      _getTitleItemWidget(Translate(context, ShopNameLanguageCode), 100),
+      _getTitleItemWidget(Translate(context, AddressLanguageCode), 100),
+      _getTitleItemWidget(Translate(context, CityLanguageCode), 100),
+      _getTitleItemWidget(Translate(context, PostalCodeLanguageCode), 100),
+      _getTitleItemWidget(Translate(context, StateLanguageCode), 100),
+      _getTitleItemWidget(Translate(context, CountryLanguageCode), 100),
+      _getTitleItemWidget(Translate(context, BankInfoLanguageCode), 100),
+      _getTitleItemWidget(Translate(context, BankHolderNameLanguageCode), 150),
+      _getTitleItemWidget(Translate(context, AccountNumberLanguageCode), 150),
+      _getTitleItemWidget(Translate(context, IBanLanguageCode), 150),
+      _getTitleItemWidget(Translate(context, BankNameLanguageCode), 100),
     ];
   }
 
@@ -106,7 +108,7 @@ class _ValidationState extends State<Validation> {
   Widget _generateFirstColumnRow(BuildContext context, int index) {
     return InkWell(
       onTap: (){
-        FlutterClipboard.copy(AllVendersList[index].ID).then(( value ) => ShowToast("Copied", context));
+        FlutterClipboard.copy(AllVendersList[index].ID).then(( value ) => ShowToast(Translate(context, CopiedLanguageCode), context));
       },
       child: Container(
         decoration: BoxDecoration(
@@ -160,7 +162,7 @@ class _ValidationState extends State<Validation> {
             border: Border.all(width: 0.5),
         ),
         child: Center(
-          child: Text("Validate",style: TextStyle(
+          child: Text(Translate(context, ValidateLanguageCode),style: TextStyle(
               color: DarkBlue,
             decoration: TextDecoration.underline,
           ),),
@@ -221,7 +223,7 @@ class _ValidationState extends State<Validation> {
         else if(ThisText == "Shop") data = ShopInfo;
         else data = BankInfo;
 
-        FlutterClipboard.copy(data).then(( value ) => ShowToast("Copied", context));
+        FlutterClipboard.copy(data).then(( value ) => ShowToast(Translate(context, CopiedLanguageCode), context));
       },
       child: Container(
         width: 100,
@@ -237,7 +239,7 @@ class _ValidationState extends State<Validation> {
   Widget _dataTableBlock(String text,double width){
     return InkWell(
       onTap: (){
-        FlutterClipboard.copy(text).then(( value ) => ShowToast("Copied", context));
+        FlutterClipboard.copy(text).then(( value ) => ShowToast(Translate(context, CopiedLanguageCode), context));
       },
       child: Container(
         decoration: BoxDecoration(
@@ -259,8 +261,8 @@ class _ValidationState extends State<Validation> {
     MarkVenderValidate(id).then((value){
       if(value){
         GetAllNonValdatingVenders().then((value){
-          if(value) ShowToast("Validation Complete", context);
-          else ShowToast("Error in Reloading", context);
+          if(value) ShowToast(Translate(context, ValidationCompleteLanguageCode), context);
+          else ShowToast(Translate(context, ErrorReloadingLanguageCode), context);
           if(this.mounted)
           setState(() {isValidating = false;});
           Navigator.of(context).pop();
@@ -269,7 +271,7 @@ class _ValidationState extends State<Validation> {
       else{
         if(this.mounted)
         setState(() {isValidating = false;});
-        ShowToast("Error in Validating", context);
+        ShowToast(Translate(context, ErrorValidatingLanguageCode), context);
         Navigator.of(context).pop();
       }
     });
@@ -282,8 +284,8 @@ class _ValidationState extends State<Validation> {
             title: Column(
               children: [
                 (!isValidating)?
-                Text('Press Ok To Validate User'):
-                Text('Wait Loading...'),
+                Text(Translate(context, OkToValidateUserLanguageCode)):
+                Text(Translate(context, WaitLoadingLanguageCode)),
               ],
             ),
             content: (isValidating)?Container(
@@ -296,7 +298,7 @@ class _ValidationState extends State<Validation> {
               children: [
                 TextButton(
                   onPressed: () => Navigator.of(context).pop(),
-                  child: Text('Cancel'),
+                  child: Text(Translate(context, CancelLanguageCode)),
                 ),
                 TextButton(
                   onPressed: (){
@@ -304,7 +306,7 @@ class _ValidationState extends State<Validation> {
                     Navigator.of(context).pop();
                     ShowDialog(id);
                   },
-                  child: Text('Ok'),
+                  child: Text(Translate(context, OkLanguageCode)),
                 )
               ],
             ),

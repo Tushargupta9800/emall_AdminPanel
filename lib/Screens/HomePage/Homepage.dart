@@ -17,9 +17,10 @@ import 'package:emall_adminpanel/SettingsAndVariables/Settings.dart';
 import 'package:emall_adminpanel/SettingsAndVariables/Toast/ToastMessages.dart';
 import 'package:emall_adminpanel/SettingsAndVariables/Variables.dart';
 import 'package:emall_adminpanel/SettingsAndVariables/routes/RouteCodes.dart';
+import 'package:emall_adminpanel/localization/Variables/Language_Codes.dart';
+import 'package:emall_adminpanel/localization/code/Language_Constraints.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -67,7 +68,7 @@ class _HomePageState extends State<HomePage> {
             GetDeliveryCharges().then((value) {
               setState(() {loading = false;});
             if (value != -1) ShowDialogForCharges(value);
-            else ShowToast("Error", context);});}
+            else ShowToast(Translate(context, ErrorTryAgainLanguageCode), context);});}
 
           else if(Where == VenderPaymentSubPageCode) {
             setState(() {SubPageCode = VenderPaymentSubPageCode;});
@@ -103,7 +104,7 @@ class _HomePageState extends State<HomePage> {
             setState(() {loading = true;});
             AllSubCategories().then((value){
               if(value) ShowDialogForSubCategory();
-              else ShowToast("Error", context);
+              else ShowToast(Translate(context, ErrorTryAgainLanguageCode), context);
             });
           }
           else if(Where == LanguageSubPageCode){
@@ -167,7 +168,7 @@ class _HomePageState extends State<HomePage> {
         child: Scaffold(
           appBar: AppBar(
             backgroundColor: DarkBlue,
-            title: Text("Admin DashBoard",
+            title: Text(Translate(context, AdminDashBoardLanguageCode),
               style: TextStyle(
                 color: White
               ),),
@@ -194,7 +195,7 @@ class _HomePageState extends State<HomePage> {
                           ),
                           Container(
                             height: 20,
-                              child: Text("Admin Name",style: TextStyle(color: White),)
+                              child: Text(Translate(context, AdminNameLanguageCode),style: TextStyle(color: White),)
                           ),
                           Container(
                             width: 200,
@@ -209,14 +210,14 @@ class _HomePageState extends State<HomePage> {
                                     height: 1,
                                     color: Grey,
                                   ),
-                                  DrawerTile("Validation",ValidationSubPagecode),
-                                  DrawerTile("Orders",OrderSubPageCode),
-                                  DrawerTile("Vender Payments",VenderPaymentSubPageCode),
-                                  DrawerTile("Sales",SalesSubPageCode),
-                                  DrawerTile("SubCategory",NewSubCategorySubPageCode),
-                                  DrawerTile("Language",LanguageSubPageCode),
-                                  DrawerTile("Delivery Charges",DeliveryChargesSubPageCode),
-                                  DrawerTile("Logout",LogoutSubPageCode),
+                                  DrawerTile(Translate(context, ValidationLanguageCode),ValidationSubPagecode),
+                                  DrawerTile(Translate(context, OrdersLanguageCode),OrderSubPageCode),
+                                  DrawerTile(Translate(context, VenderPaymentsLanguageCode),VenderPaymentSubPageCode),
+                                  DrawerTile(Translate(context, SalesLanguageCode),SalesSubPageCode),
+                                  DrawerTile(Translate(context, SubCategoryLanguageCode),NewSubCategorySubPageCode),
+                                  DrawerTile(Translate(context, LanguageLanguageCode),LanguageSubPageCode),
+                                  DrawerTile(Translate(context, DeliveryChargesLanguageCode),DeliveryChargesSubPageCode),
+                                  DrawerTile(Translate(context, LogoutLanguageCode),LogoutSubPageCode),
                                 ],
                               ),
                             ),
@@ -253,11 +254,11 @@ class _HomePageState extends State<HomePage> {
                       (!isAdding)?
                       Column(
                         children: [
-                          Text('Old Delivery Charges: ' + value.toString() + " SAR"),
-                          Text('Enter new delivery Charges'),
+                          Text(Translate(context, OldChargesLanguageCode) + ": " + value.toString() + " SAR"),
+                          Text(Translate(context, EnterNewChargesLanguageCode)),
                         ],
                       ):
-                      Text('Wait loading...'),
+                      Text(Translate(context, WaitLoadingLanguageCode)),
                     ],
                   ),
                   content: (isAdding)?Container(
@@ -282,92 +283,24 @@ class _HomePageState extends State<HomePage> {
                         children: [
                           TextButton(
                             onPressed: () => Navigator.of(context).pop(),
-                            child: Text('Cancel'),
+                            child: Text(Translate(context, CancelLanguageCode)),
                           ),
                           TextButton(
                             onPressed: (){
                               setState((){
                                 isAdding = true;
                               });
-                              // Navigator.of(context).pop();
                               if(DeliveryChargesController.text.length > 0)
                                 ChangeDeliveryCharges(ChangeDeliveryChargesUrl + double.parse(DeliveryChargesController.text).toString()).then((value){
                                   Navigator.of(context).pop();
                                 });
-                                // launch(ChangeDeliveryChargesUrl + double.parse(DeliveryChargesController.text).toString());
                             },
-                            child: Text('Change'),
+                            child: Text(Translate(context, ChangeLanguageCode)),
                           ),
                         ],
                       ),
                     ],
                   ),
-                );
-              }
-          );
-        }
-    );
-  }
-
-  void ShowDialogForChargaes(double value){
-    setState(() {loading = false;});
-    showDialog(
-        context: context,
-        builder: (BuildContext context){
-          return  StatefulBuilder(
-              builder: (context,setState){
-                bool isupdating = false;
-                return AlertDialog(
-                  title: (isupdating)?
-                      Text("Wait Loading")
-                      :Column(
-                    children: [
-                      Text('Old Delivery Charges: ' + value.toString() + " SAR"),
-                      Text('Enter new delivery Charges'),
-                    ],
-                  ),
-                  content: (isupdating)?
-                  Center(
-                    child: Container(
-                      width: 50,
-                      height: 50,
-                      child: CircularProgressIndicator(),
-                    ),
-                  )
-                      :Column(
-                    mainAxisSize: MainAxisSize.min,
-                        children: [
-                          TextField(
-                            controller: DeliveryChargesController,
-                            keyboardType: TextInputType.number,
-                            inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                            decoration: InputDecoration(
-                              contentPadding:
-                              EdgeInsets.only(left: 15, bottom: 11, top: 11, right: 15),
-                            ),
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: [
-                              TextButton(
-                                onPressed: () => Navigator.of(context).pop(),
-                                child: Text('Cancel'),
-                              ),
-                              TextButton(
-                                onPressed: (){
-                                  setState((){
-                                    isupdating = true;
-                                  });
-                                  // Navigator.of(context).pop();
-                                  if(DeliveryChargesController.text.length > 0)
-                                    launch(ChangeDeliveryChargesUrl + double.parse(DeliveryChargesController.text).toString());
-                                },
-                                child: Text('Change'),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
                 );
               }
           );
@@ -381,7 +314,7 @@ class _HomePageState extends State<HomePage> {
         context: context,
         builder: (BuildContext context){
           return  AlertDialog(
-            title: Text('SubCategories'),
+            title: Text(Translate(context, SubCategoryLanguageCode)),
             content: Container(
               height: MediaQuery.of(context).size.height/2,
               child: SingleChildScrollView(
@@ -405,12 +338,12 @@ class _HomePageState extends State<HomePage> {
                         ],
                       ),
                     SizedBox(height: 10,),
-                    Text('New SubCategory'),
+                    Text(Translate(context, NewSubCategoryLanguageCode)),
                     TextField(
                       controller: EnglishController,
                       textDirection: TextDirection.ltr,
                       decoration: InputDecoration(
-                        hintText: "In English",
+                        hintText: Translate(context, InEnglishLanguageCode),
                         contentPadding:
                         EdgeInsets.only(left: 15, bottom: 11, top: 11, right: 15),
                       ),
@@ -419,7 +352,7 @@ class _HomePageState extends State<HomePage> {
                       controller: ArabicController,
                       textDirection: TextDirection.rtl,
                       decoration: InputDecoration(
-                        hintText: "In Arabic",
+                        hintText: Translate(context, InArabicLanguageCode),
                         contentPadding:
                         EdgeInsets.only(left: 15, bottom: 11, top: 11, right: 15),
                       ),
@@ -431,7 +364,7 @@ class _HomePageState extends State<HomePage> {
             actions: [
               TextButton(
                 onPressed: () => Navigator.of(context).pop(),
-                child: Text('Cancel'),
+                child: Text(Translate(context, CancelLanguageCode)),
               ),
               TextButton(
                 onPressed: (){
@@ -439,7 +372,7 @@ class _HomePageState extends State<HomePage> {
                   if(ArabicController.text.length > 0  && EnglishController.text.length > 0)
                     AddSubCategoryDialog(AddSubCategoriesUrl + EnglishController.text + "/" + ArabicController.text,context);
                 },
-                child: Text('Add'),
+                child: Text(Translate(context, AddLanguageCode)),
               ),
             ],
           );
@@ -452,7 +385,7 @@ class _HomePageState extends State<HomePage> {
     if(isDeleting)
       DeleteSubCategory(id).then((value){
         if(value){
-          ShowToast("SubCategory Deleted", context);
+          ShowToast(Translate(context, SubCatDeletedLanguageCode), context);
           if(this.mounted)
           setState(() {isDeleting = false;});
           Navigator.of(context).pop();
@@ -460,7 +393,7 @@ class _HomePageState extends State<HomePage> {
         else{
           if(this.mounted)
           setState(() {isDeleting = false;});
-          ShowToast("Error in Deleting", context);
+          ShowToast(Translate(context, ErrorDeletingLanguageCode), context);
           Navigator.of(context).pop();
         }
       });
@@ -473,8 +406,8 @@ class _HomePageState extends State<HomePage> {
             title: Column(
               children: [
                 (!isDeleting)?
-                Text('Press Ok To Delete SubCategory'):
-                Text('Wait loading...'),
+                Text(Translate(context, OkToDeleteSubCategoryLanguageCode)):
+                Text(Translate(context, WaitLoadingLanguageCode)),
               ],
             ),
             content: (isDeleting)?Container(
@@ -487,7 +420,7 @@ class _HomePageState extends State<HomePage> {
               children: [
                 TextButton(
                   onPressed: () => Navigator.of(context).pop(),
-                  child: Text('Cancel'),
+                  child: Text(Translate(context, CancelLanguageCode)),
                 ),
                 TextButton(
                   onPressed: (){
@@ -495,7 +428,7 @@ class _HomePageState extends State<HomePage> {
                     Navigator.of(context).pop();
                     ShowDialog(id);
                   },
-                  child: Text('Ok'),
+                  child: Text(Translate(context, OkLanguageCode)),
                 )
               ],
             ),

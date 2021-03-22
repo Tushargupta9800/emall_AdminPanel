@@ -4,6 +4,8 @@ import 'package:emall_adminpanel/Api/Products/orders.dart';
 import 'package:emall_adminpanel/SettingsAndVariables/Settings.dart';
 import 'package:emall_adminpanel/SettingsAndVariables/Toast/ToastMessages.dart';
 import 'package:emall_adminpanel/SettingsAndVariables/Variables.dart';
+import 'package:emall_adminpanel/localization/Variables/Language_Codes.dart';
+import 'package:emall_adminpanel/localization/code/Language_Constraints.dart';
 import 'package:flutter/material.dart';
 import 'package:horizontal_data_table/horizontal_data_table.dart';
 
@@ -57,26 +59,26 @@ class _OrdersState extends State<Orders> {
 
   List<Widget> _getTitleWidget() {
     return [
-      _getTitleItemWidget('ID', 200),
-      _getTitleItemWidget('Completed?', 200),
-      _getTitleItemWidget('All Info', 100),
-      _getTitleItemWidget('Price Info', 100),
-      _getTitleItemWidget('Transaction ID', 200),
-      _getTitleItemWidget('Product Price', 100),
-      _getTitleItemWidget('Tax', 100),
-      _getTitleItemWidget('Delivery Charges', 150),
-      _getTitleItemWidget('Total Paid', 100),
-      _getTitleItemWidget('Customer Info', 100),
-      _getTitleItemWidget('Date And Time', 250),
-      _getTitleItemWidget('Address', 300),
-      _getTitleItemWidget('Mobile', 100),
-      _getTitleItemWidget('State', 100),
-      _getTitleItemWidget('Country', 100),
-      _getTitleItemWidget('Product Info', 100),
-      _getTitleItemWidget('Product Id', 100),
-      _getTitleItemWidget('Color', 100),
-      _getTitleItemWidget('Size', 100),
-      _getTitleItemWidget('Quantity', 100),
+      _getTitleItemWidget(Translate(context, IDLanguageCode), 200),
+      _getTitleItemWidget(Translate(context, CompletedLanguageCode), 200),
+      _getTitleItemWidget(Translate(context, AllInfoLanguageCode), 100),
+      _getTitleItemWidget(Translate(context, PriceInfoLanguageCode), 100),
+      _getTitleItemWidget(Translate(context, TransactionIDLanguageCode), 200),
+      _getTitleItemWidget(Translate(context, ProductPriceLanguageCode), 100),
+      _getTitleItemWidget(Translate(context, TaxLanguageCode), 100),
+      _getTitleItemWidget(Translate(context, DeliveryChargesLanguageCode), 150),
+      _getTitleItemWidget(Translate(context, TotalPaidLanguageCode), 100),
+      _getTitleItemWidget(Translate(context, CustomerInfoLanguageCode), 100),
+      _getTitleItemWidget(Translate(context, DateAndTimeLanguageCode), 250),
+      _getTitleItemWidget(Translate(context, AddressLanguageCode), 300),
+      _getTitleItemWidget(Translate(context, MobileLanguageCode), 100),
+      _getTitleItemWidget(Translate(context, StateLanguageCode), 100),
+      _getTitleItemWidget(Translate(context, CountryLanguageCode), 100),
+      _getTitleItemWidget(Translate(context, ProductInfoLanguageCode), 100),
+      _getTitleItemWidget(Translate(context, ProductIdLanguageCode), 100),
+      _getTitleItemWidget(Translate(context, ColorLanguageCode), 100),
+      _getTitleItemWidget(Translate(context, SizeLanguageCode), 100),
+      _getTitleItemWidget(Translate(context, QuantityLanguageCode), 100),
     ];
   }
 
@@ -101,7 +103,7 @@ class _OrdersState extends State<Orders> {
   Widget _generateFirstColumnRow(BuildContext context, int index) {
     return InkWell(
       onTap: (){
-        FlutterClipboard.copy(AllOrdersList[index].ID).then(( value ) => ShowToast("Copied", context));
+        FlutterClipboard.copy(AllOrdersList[index].ID).then(( value ) => ShowToast(Translate(context, CopiedLanguageCode), context));
       },
       child: Container(
         decoration: BoxDecoration(
@@ -145,7 +147,7 @@ class _OrdersState extends State<Orders> {
   Widget _PriceHandler(String text,double width,bool isit){
     return InkWell(
       onTap: (){
-        FlutterClipboard.copy(text).then(( value ) => ShowToast("Copied", context));
+        FlutterClipboard.copy(text).then(( value ) => ShowToast(Translate(context, CopiedLanguageCode), context));
       },
       child: Container(
         decoration: BoxDecoration(
@@ -178,7 +180,7 @@ class _OrdersState extends State<Orders> {
           border: Border.all(width: 0.5),
         ),
         child: Center(
-          child: Text("Mark Complete",style: TextStyle(
+          child: Text(Translate(context, MarkCompleteLanguageCode),style: TextStyle(
             color: DarkBlue,
             decoration: TextDecoration.underline,
           ),),
@@ -213,7 +215,7 @@ class _OrdersState extends State<Orders> {
         else if(ThisText == "Customer") data = CustomerData;
         else data = ProductData;
 
-        FlutterClipboard.copy(data).then(( value ) => ShowToast("Copied", context));
+        FlutterClipboard.copy(data).then(( value ) => ShowToast(Translate(context, CopiedLanguageCode), context));
       },
       child: Container(
           width: 100,
@@ -229,7 +231,7 @@ class _OrdersState extends State<Orders> {
   Widget _ColorTile(String text,double width){
     return InkWell(
       onTap: (){
-        FlutterClipboard.copy(text).then(( value ) => ShowToast("Copied", context));
+        FlutterClipboard.copy(text).then(( value ) => ShowToast(Translate(context, CopiedLanguageCode), context));
       },
       child: Container(
         width: width,
@@ -255,7 +257,7 @@ class _OrdersState extends State<Orders> {
   Widget _dataTableBlock(String text,double width){
     return InkWell(
       onTap: (){
-        FlutterClipboard.copy(text).then(( value ) => ShowToast("Copied", context));
+        FlutterClipboard.copy(text).then(( value ) => ShowToast(Translate(context, CopiedLanguageCode), context));
       },
       child: Container(
         decoration: BoxDecoration(
@@ -276,8 +278,8 @@ class _OrdersState extends State<Orders> {
       MarkOrderComplete(id).then((value){
         if(value){
           AllOrders().then((value){
-            if(value) ShowToast("Order Mark Complete", context);
-            else ShowToast("Error in Reloading", context);
+            if(value) ShowToast(Translate(context, OrderMarkedCompletedLanguageCode), context);
+            else ShowToast(Translate(context, ErrorReloadingLanguageCode), context);
             if(this.mounted)
             setState(() {isCompleted = false;});
             Navigator.of(context).pop();
@@ -286,7 +288,7 @@ class _OrdersState extends State<Orders> {
         else{
           if(this.mounted)
           setState(() {isCompleted = false;});
-          ShowToast("Error in Marking", context);
+          ShowToast(Translate(context, ErrorMarkingLanguageCode), context);
           Navigator.of(context).pop();
         }
       });
@@ -299,8 +301,8 @@ class _OrdersState extends State<Orders> {
             title: Column(
               children: [
                 (!isCompleted)?
-                Text('Press Ok To Mark Complete'):
-                Text('Wait loading...'),
+                Text(Translate(context, OkToMarkCompleteLanguageCode)):
+                Text(Translate(context, WaitLoadingLanguageCode)),
               ],
             ),
             content: (isCompleted)?Container(
@@ -313,7 +315,7 @@ class _OrdersState extends State<Orders> {
               children: [
                 TextButton(
                   onPressed: () => Navigator.of(context).pop(),
-                  child: Text('Cancel'),
+                  child: Text(Translate(context, CancelLanguageCode)),
                 ),
                 TextButton(
                   onPressed: (){
@@ -321,7 +323,7 @@ class _OrdersState extends State<Orders> {
                     Navigator.of(context).pop();
                     ShowDialog(id);
                   },
-                  child: Text('Ok'),
+                  child: Text(Translate(context, OkLanguageCode)),
                 )
               ],
             ),

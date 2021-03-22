@@ -5,6 +5,8 @@ import 'package:emall_adminpanel/Api/Venders/GetInfo.dart';
 import 'package:emall_adminpanel/SettingsAndVariables/Settings.dart';
 import 'package:emall_adminpanel/SettingsAndVariables/Toast/ToastMessages.dart';
 import 'package:emall_adminpanel/SettingsAndVariables/Variables.dart';
+import 'package:emall_adminpanel/localization/Variables/Language_Codes.dart';
+import 'package:emall_adminpanel/localization/code/Language_Constraints.dart';
 import 'package:flutter/material.dart';
 import 'package:horizontal_data_table/horizontal_data_table.dart';
 
@@ -58,26 +60,26 @@ class _VenderPaymentsState extends State<VenderPayments> {
 
   List<Widget> _getTitleWidget() {
     return [
-      _getTitleItemWidget('ID', 200),
-      _getTitleItemWidget('Payment Sent?', 200),
-      _getTitleItemWidget('All Info', 100),
-      _getTitleItemWidget('Price Info', 100),
-      _getTitleItemWidget('Transaction ID', 200),
-      _getTitleItemWidget('Product Price', 100),
-      _getTitleItemWidget('Tax', 100),
-      _getTitleItemWidget('Delivery Charges', 150),
-      _getTitleItemWidget('Total Paid', 100),
-      _getTitleItemWidget('Customer Info', 100),
-      _getTitleItemWidget('Date And Time', 250),
-      _getTitleItemWidget('Address', 300),
-      _getTitleItemWidget('Mobile', 100),
-      _getTitleItemWidget('State', 100),
-      _getTitleItemWidget('Country', 100),
-      _getTitleItemWidget('Product Info', 100),
-      _getTitleItemWidget('Product Id', 100),
-      _getTitleItemWidget('Color', 100),
-      _getTitleItemWidget('Size', 100),
-      _getTitleItemWidget('Quantity', 100),
+      _getTitleItemWidget(Translate(context, IDLanguageCode), 200),
+      _getTitleItemWidget(Translate(context, PaymentSentLanguageCode), 200),
+      _getTitleItemWidget(Translate(context, AllInfoLanguageCode), 100),
+      _getTitleItemWidget(Translate(context, PriceInfoLanguageCode), 100),
+      _getTitleItemWidget(Translate(context, TransactionIDLanguageCode), 200),
+      _getTitleItemWidget(Translate(context, ProductPriceLanguageCode), 100),
+      _getTitleItemWidget(Translate(context, TaxLanguageCode), 100),
+      _getTitleItemWidget(Translate(context, DeliveryChargesLanguageCode), 150),
+      _getTitleItemWidget(Translate(context, TotalPaidLanguageCode), 100),
+      _getTitleItemWidget(Translate(context, CustomerInfoLanguageCode), 100),
+      _getTitleItemWidget(Translate(context, DateAndTimeLanguageCode), 250),
+      _getTitleItemWidget(Translate(context, AddressLanguageCode), 300),
+      _getTitleItemWidget(Translate(context, MobileLanguageCode), 100),
+      _getTitleItemWidget(Translate(context, StateLanguageCode), 100),
+      _getTitleItemWidget(Translate(context, CountryLanguageCode), 100),
+      _getTitleItemWidget(Translate(context, ProductInfoLanguageCode), 100),
+      _getTitleItemWidget(Translate(context, ProductIdLanguageCode), 100),
+      _getTitleItemWidget(Translate(context, ColorLanguageCode), 100),
+      _getTitleItemWidget(Translate(context, SizeLanguageCode), 100),
+      _getTitleItemWidget(Translate(context, QuantityLanguageCode), 100),
     ];
   }
 
@@ -102,7 +104,7 @@ class _VenderPaymentsState extends State<VenderPayments> {
   Widget _generateFirstColumnRow(BuildContext context, int index) {
     return InkWell(
       onTap: (){
-        FlutterClipboard.copy(AllVenderPaymentLeftList[index].ID).then(( value ) => ShowToast("Copied", context));
+        FlutterClipboard.copy(AllVenderPaymentLeftList[index].ID).then(( value ) => ShowToast(Translate(context, CopiedLanguageCode), context));
       },
       child: Container(
         decoration: BoxDecoration(
@@ -146,7 +148,7 @@ class _VenderPaymentsState extends State<VenderPayments> {
   Widget _PriceHandler(String text,double width,bool isit){
     return InkWell(
       onTap: (){
-        FlutterClipboard.copy(text).then(( value ) => ShowToast("Copied", context));
+        FlutterClipboard.copy(text).then(( value ) => ShowToast(Translate(context, CopiedLanguageCode), context));
       },
       child: Container(
         decoration: BoxDecoration(
@@ -179,7 +181,7 @@ class _VenderPaymentsState extends State<VenderPayments> {
           border: Border.all(width: 0.5),
         ),
         child: Center(
-          child: Text("Mark Payment Sent",style: TextStyle(
+          child: Text(Translate(context, MarkPaymentSentLanguageCode),style: TextStyle(
             color: DarkBlue,
             decoration: TextDecoration.underline,
           ),),
@@ -214,7 +216,7 @@ class _VenderPaymentsState extends State<VenderPayments> {
         else if(ThisText == "Customer") data = CustomerData;
         else data = ProductData;
 
-        FlutterClipboard.copy(data).then(( value ) => ShowToast("Copied", context));
+        FlutterClipboard.copy(data).then(( value ) => ShowToast(Translate(context, CopiedLanguageCode), context));
       },
       child: Container(
           width: 100,
@@ -230,7 +232,7 @@ class _VenderPaymentsState extends State<VenderPayments> {
   Widget _ColorTile(String text,double width){
     return InkWell(
       onTap: (){
-        FlutterClipboard.copy(text).then(( value ) => ShowToast("Copied", context));
+        FlutterClipboard.copy(text).then(( value ) => ShowToast(Translate(context, CopiedLanguageCode), context));
       },
       child: Container(
         width: width,
@@ -256,7 +258,7 @@ class _VenderPaymentsState extends State<VenderPayments> {
   Widget _dataTableBlock(String text,double width){
     return InkWell(
       onTap: (){
-        FlutterClipboard.copy(text).then(( value ) => ShowToast("Copied", context));
+        FlutterClipboard.copy(text).then(( value ) => ShowToast(Translate(context, CopiedLanguageCode), context));
       },
       child: Container(
         decoration: BoxDecoration(
@@ -292,8 +294,8 @@ class _VenderPaymentsState extends State<VenderPayments> {
                   title: Column(
                     children: [
                       (!isAdding && !isShowing)?
-                      Text('Press Ok To Mark Payment Sent'):
-                      Text('Wait loading...'),
+                      Text(Translate(context, OkToMarkSentLanguageCode)):
+                      Text(Translate(context, WaitLoadingLanguageCode)),
                     ],
                   ),
                   content: (isAdding || isShowing)?Container(
@@ -304,21 +306,21 @@ class _VenderPaymentsState extends State<VenderPayments> {
                   Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      PrintVenderBankInfo("Name",PayToThisVender.Name),
-                      PrintVenderBankInfo("ID",PayToThisVender.ID),
-                      PrintVenderBankInfo("Mobile",PayToThisVender.Mobile),
-                      PrintVenderBankInfo("Email",PayToThisVender.Email),
-                      PrintVenderBankInfo("Bank Holder Name",PayToThisVender.BankHoldername),
-                      PrintVenderBankInfo("BankName", PayToThisVender.BankName),
-                      PrintVenderBankInfo("Account Number", PayToThisVender.AccountNumber),
-                      PrintVenderBankInfo("IBan", PayToThisVender.IBan),
+                      PrintVenderBankInfo(Translate(context, NameLanguageCode),PayToThisVender.Name),
+                      PrintVenderBankInfo(Translate(context, IDLanguageCode),PayToThisVender.ID),
+                      PrintVenderBankInfo(Translate(context, MobileLanguageCode),PayToThisVender.Mobile),
+                      PrintVenderBankInfo(Translate(context, EmailLanguageCode),PayToThisVender.Email),
+                      PrintVenderBankInfo(Translate(context, BankHolderNameLanguageCode),PayToThisVender.BankHoldername),
+                      PrintVenderBankInfo(Translate(context, BankNameLanguageCode), PayToThisVender.BankName),
+                      PrintVenderBankInfo(Translate(context, AccountNumberLanguageCode), PayToThisVender.AccountNumber),
+                      PrintVenderBankInfo(Translate(context, IBanLanguageCode), PayToThisVender.IBan),
 
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
                           TextButton(
                             onPressed: () => Navigator.of(context).pop(),
-                            child: Text('Cancel'),
+                            child: Text(Translate(context, CancelLanguageCode)),
                           ),
                           TextButton(
                             onPressed: (){
@@ -326,8 +328,8 @@ class _VenderPaymentsState extends State<VenderPayments> {
                               MarkVenderPaymentComplete(id).then((value){
                                 if(value){
                                   HalfCompleted().then((value) {
-                                    if(value) ShowToast("Done Marking", context);
-                                    else ShowToast("Error Reloading", context);
+                                    if(value) ShowToast(Translate(context, DoneMarkingLanguageCode), context);
+                                    else ShowToast(Translate(context, ErrorReloadingLanguageCode), context);
                                     if(this.mounted)
                                     setState((){});
                                     Navigator.of(context).pop();
@@ -335,11 +337,11 @@ class _VenderPaymentsState extends State<VenderPayments> {
                                 }
                                 else{
                                   Navigator.of(context).pop();
-                                  ShowToast("Error in marking", context);
+                                  ShowToast(Translate(context, ErrorMarkingLanguageCode), context);
                                 }
                               });
                             },
-                            child: Text('Ok'),
+                            child: Text(Translate(context, OkLanguageCode)),
                           )
                         ],
                       ),
@@ -365,7 +367,7 @@ class _VenderPaymentsState extends State<VenderPayments> {
         SizedBox(width: 10,),
         InkWell(
           onTap: (){
-            FlutterClipboard.copy(text).then((value) => ShowToast("Copied", context));
+            FlutterClipboard.copy(text).then((value) => ShowToast(Translate(context, CopiedLanguageCode), context));
           },
           child: Icon(Icons.copy),
         ),

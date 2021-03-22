@@ -3,6 +3,8 @@ import 'package:emall_adminpanel/Api/Products/Sales.dart';
 import 'package:emall_adminpanel/SettingsAndVariables/Settings.dart';
 import 'package:emall_adminpanel/SettingsAndVariables/Toast/ToastMessages.dart';
 import 'package:emall_adminpanel/SettingsAndVariables/Variables.dart';
+import 'package:emall_adminpanel/localization/Variables/Language_Codes.dart';
+import 'package:emall_adminpanel/localization/code/Language_Constraints.dart';
 import 'package:flutter/material.dart';
 import 'package:horizontal_data_table/horizontal_data_table.dart';
 
@@ -55,25 +57,25 @@ class _SalesState extends State<Sales> {
 
   List<Widget> _getTitleWidget() {
     return [
-      _getTitleItemWidget('ID', 200),
-      _getTitleItemWidget('All Info', 100),
-      _getTitleItemWidget('Price Info', 100),
-      _getTitleItemWidget('Transaction ID', 200),
-      _getTitleItemWidget('Product Price', 100),
-      _getTitleItemWidget('Tax', 100),
-      _getTitleItemWidget('Delivery Charges', 150),
-      _getTitleItemWidget('Total Paid', 100),
-      _getTitleItemWidget('Customer Info', 100),
-      _getTitleItemWidget('Date And Time', 250),
-      _getTitleItemWidget('Address', 300),
-      _getTitleItemWidget('Mobile', 100),
-      _getTitleItemWidget('State', 100),
-      _getTitleItemWidget('Country', 100),
-      _getTitleItemWidget('Product Info', 100),
-      _getTitleItemWidget('Product Id', 100),
-      _getTitleItemWidget('Color', 100),
-      _getTitleItemWidget('Size', 100),
-      _getTitleItemWidget('Quantity', 100),
+      _getTitleItemWidget(Translate(context, IDLanguageCode), 200),
+      _getTitleItemWidget(Translate(context, AllInfoLanguageCode), 100),
+      _getTitleItemWidget(Translate(context, PriceInfoLanguageCode), 100),
+      _getTitleItemWidget(Translate(context, TransactionIDLanguageCode), 200),
+      _getTitleItemWidget(Translate(context, ProductPriceLanguageCode), 100),
+      _getTitleItemWidget(Translate(context, TaxLanguageCode), 100),
+      _getTitleItemWidget(Translate(context, DeliveryChargesLanguageCode), 150),
+      _getTitleItemWidget(Translate(context, TotalPaidLanguageCode), 100),
+      _getTitleItemWidget(Translate(context, CustomerInfoLanguageCode), 100),
+      _getTitleItemWidget(Translate(context, DateAndTimeLanguageCode), 250),
+      _getTitleItemWidget(Translate(context, AddressLanguageCode), 300),
+      _getTitleItemWidget(Translate(context, MobileLanguageCode), 100),
+      _getTitleItemWidget(Translate(context, StateLanguageCode), 100),
+      _getTitleItemWidget(Translate(context, CountryLanguageCode), 100),
+      _getTitleItemWidget(Translate(context, ProductInfoLanguageCode), 100),
+      _getTitleItemWidget(Translate(context, ProductIdLanguageCode), 100),
+      _getTitleItemWidget(Translate(context, ColorLanguageCode), 100),
+      _getTitleItemWidget(Translate(context, SizeLanguageCode), 100),
+      _getTitleItemWidget(Translate(context, QuantityLanguageCode), 100),
     ];
   }
 
@@ -98,7 +100,7 @@ class _SalesState extends State<Sales> {
   Widget _generateFirstColumnRow(BuildContext context, int index) {
     return InkWell(
       onTap: (){
-        FlutterClipboard.copy(AllCompletedOrderList[index].ID).then(( value ) => ShowToast("Copied", context));
+        FlutterClipboard.copy(AllCompletedOrderList[index].ID).then(( value ) => ShowToast(Translate(context, CopiedLanguageCode), context));
       },
       child: Container(
         decoration: BoxDecoration(
@@ -141,7 +143,7 @@ class _SalesState extends State<Sales> {
   Widget _PriceHandler(String text,double width,bool isit){
     return InkWell(
       onTap: (){
-        FlutterClipboard.copy(text).then(( value ) => ShowToast("Copied", context));
+        FlutterClipboard.copy(text).then(( value ) => ShowToast(Translate(context, CopiedLanguageCode), context));
       },
       child: Container(
         decoration: BoxDecoration(
@@ -188,7 +190,7 @@ class _SalesState extends State<Sales> {
         else if(ThisText == "Customer") data = CustomerData;
         else data = ProductData;
 
-        FlutterClipboard.copy(data).then(( value ) => ShowToast("Copied", context));
+        FlutterClipboard.copy(data).then(( value ) => ShowToast(Translate(context, CopiedLanguageCode), context));
       },
       child: Container(
           width: 100,
@@ -204,7 +206,7 @@ class _SalesState extends State<Sales> {
   Widget _ColorTile(String text,double width){
     return InkWell(
       onTap: (){
-        FlutterClipboard.copy(text).then(( value ) => ShowToast("Copied", context));
+        FlutterClipboard.copy(text).then(( value ) => ShowToast(Translate(context, CopiedLanguageCode), context));
       },
       child: Container(
         width: width,
@@ -230,7 +232,7 @@ class _SalesState extends State<Sales> {
   Widget _dataTableBlock(String text,double width){
     return InkWell(
       onTap: (){
-        FlutterClipboard.copy(text).then(( value ) => ShowToast("Copied", context));
+        FlutterClipboard.copy(text).then(( value ) => ShowToast(Translate(context, CopiedLanguageCode), context));
       },
       child: Container(
         decoration: BoxDecoration(
