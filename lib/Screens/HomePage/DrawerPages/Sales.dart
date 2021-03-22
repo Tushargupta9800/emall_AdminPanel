@@ -44,6 +44,7 @@ class _SalesState extends State<Sales> {
         refreshIndicatorHeight: 60,
         onRefresh: () async {
           await AdminSales();
+          if(this.mounted)
           setState(() {});
           _hdtRefreshController.refreshCompleted();
         },

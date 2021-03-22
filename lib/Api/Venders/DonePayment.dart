@@ -19,8 +19,6 @@ Future<bool> MarkVenderPaymentComplete(String id) async {
 
   Map<dynamic, dynamic> res = jsonDecode(response.body.toString());
 
-  print(res);
-
   if(res["error"] == null) return true;
   return false;
 }

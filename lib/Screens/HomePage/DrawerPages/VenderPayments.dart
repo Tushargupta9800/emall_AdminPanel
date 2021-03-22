@@ -47,6 +47,7 @@ class _VenderPaymentsState extends State<VenderPayments> {
         refreshIndicatorHeight: 60,
         onRefresh: () async {
           await HalfCompleted();
+          if(this.mounted)
           setState(() {});
           _hdtRefreshController.refreshCompleted();
         },
@@ -283,6 +284,7 @@ class _VenderPaymentsState extends State<VenderPayments> {
               builder: (context,setState){
                 if(isShowing){
                   GetInfo(VenderId).then((value){
+                    if(this.mounted)
                     setState(() {isShowing = false;});
                   });
                 }
@@ -326,6 +328,7 @@ class _VenderPaymentsState extends State<VenderPayments> {
                                   HalfCompleted().then((value) {
                                     if(value) ShowToast("Done Marking", context);
                                     else ShowToast("Error Reloading", context);
+                                    if(this.mounted)
                                     setState((){});
                                     Navigator.of(context).pop();
                                   });

@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:emall_adminpanel/Api/Secrets/Secrets.dart';
+import 'package:emall_adminpanel/SettingsAndVariables/Variables.dart';
 import 'package:http/http.dart' as http;
 
 Future<bool> AuthAdmin(String Password) async {
@@ -16,6 +17,9 @@ Future<bool> AuthAdmin(String Password) async {
     }),
   );
   Map<dynamic, dynamic> res = await jsonDecode(response.body.toString());
-  if(res["error"] == null) return true;
+  if(res["error"] == null){
+    isAuth = true;
+    return true;
+  }
   return false;
 }

@@ -1,7 +1,6 @@
 import 'package:clipboard/clipboard.dart';
 import 'package:emall_adminpanel/Api/Products/OrderCompleted.dart';
 import 'package:emall_adminpanel/Api/Products/orders.dart';
-import 'package:emall_adminpanel/Api/Secrets/Secrets.dart';
 import 'package:emall_adminpanel/SettingsAndVariables/Settings.dart';
 import 'package:emall_adminpanel/SettingsAndVariables/Toast/ToastMessages.dart';
 import 'package:emall_adminpanel/SettingsAndVariables/Variables.dart';
@@ -47,6 +46,7 @@ class _OrdersState extends State<Orders> {
         refreshIndicatorHeight: 60,
         onRefresh: () async {
           await AllOrders();
+          if(this.mounted)
           setState(() {});
           _hdtRefreshController.refreshCompleted();
         },
@@ -278,11 +278,13 @@ class _OrdersState extends State<Orders> {
           AllOrders().then((value){
             if(value) ShowToast("Order Mark Complete", context);
             else ShowToast("Error in Reloading", context);
+            if(this.mounted)
             setState(() {isCompleted = false;});
             Navigator.of(context).pop();
           });
         }
         else{
+          if(this.mounted)
           setState(() {isCompleted = false;});
           ShowToast("Error in Marking", context);
           Navigator.of(context).pop();

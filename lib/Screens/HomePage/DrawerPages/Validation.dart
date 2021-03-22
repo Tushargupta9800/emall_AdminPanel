@@ -50,6 +50,7 @@ class _ValidationState extends State<Validation> {
         refreshIndicatorHeight: 60,
         onRefresh: () async {
           await GetAllNonValdatingVenders();
+          if(this.mounted)
           setState(() {});
           _hdtRefreshController.refreshCompleted();
         },
@@ -151,8 +152,6 @@ class _ValidationState extends State<Validation> {
     return InkWell(
       onTap: () async {
         ShowDialog(ID);
-        // await launch(ValidateTheUserUrl + ID);
-        // GetAllNonValdatingVenders().then((value) {setState(() {});});
       },
       child: Container(
         width: 100,
@@ -262,11 +261,13 @@ class _ValidationState extends State<Validation> {
         GetAllNonValdatingVenders().then((value){
           if(value) ShowToast("Validation Complete", context);
           else ShowToast("Error in Reloading", context);
+          if(this.mounted)
           setState(() {isValidating = false;});
           Navigator.of(context).pop();
         });
       }
       else{
+        if(this.mounted)
         setState(() {isValidating = false;});
         ShowToast("Error in Validating", context);
         Navigator.of(context).pop();

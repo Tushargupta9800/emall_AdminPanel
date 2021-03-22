@@ -31,3 +31,4 @@ VenderModel PayToThisVender = VenderModel();
 
 String HeroTag = "";
 MemoryImage HeroImage;
+bool isAuth = false;

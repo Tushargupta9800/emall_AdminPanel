@@ -16,6 +16,7 @@ class _LogoutState extends State<Logout> {
   @override
   void initState() {
     time = new Timer.periodic(Duration(milliseconds: 800), (Timer t) {
+      if(this.mounted)
       setState(() {
         Navigator.popAndPushNamed(context,LoginRouteCode);
       });

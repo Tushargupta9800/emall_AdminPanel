@@ -1,3 +1,4 @@
+import 'package:emall_adminpanel/Api/DeliveryCharges/ChangeDeliveryCharges.dart';
 import 'package:emall_adminpanel/Api/DeliveryCharges/GetDeliveryCharges.dart';
 import 'package:emall_adminpanel/Api/Products/HalfCompleted.dart';
 import 'package:emall_adminpanel/Api/Products/Sales.dart';
@@ -64,6 +65,7 @@ class _HomePageState extends State<HomePage> {
             DeliveryChargesController.clear();
             setState(() {loading = true;});
             GetDeliveryCharges().then((value) {
+              setState(() {loading = false;});
             if (value != -1) ShowDialogForCharges(value);
             else ShowToast("Error", context);});}
 
@@ -71,24 +73,28 @@ class _HomePageState extends State<HomePage> {
             setState(() {SubPageCode = VenderPaymentSubPageCode;});
             setState(() {loading = true;
               HalfCompleted().then((value) {
+                if(this.mounted)
                 setState(() {loading = false;});});});}
 
           else if(Where == SalesSubPageCode){
             setState(() {SubPageCode = SalesSubPageCode;});
             setState(() {loading = true;
               AdminSales().then((value) {
+                if(this.mounted)
                 setState(() {loading = false;});});});}
 
           else if(Where == OrderSubPageCode){
             setState(() {SubPageCode = OrderSubPageCode;});
             setState(() {loading = true;
               AllOrders().then((value) {
+                if(this.mounted)
                 setState(() {loading = false;});});});}
 
           else if(Where == ValidationSubPagecode){
             setState(() {SubPageCode = ValidationSubPagecode;});
             setState(() {loading = true;});
             GetAllNonValdatingVenders().then((value){
+              if(this.mounted)
               setState(() {loading = false;});});}
 
           else if(Where == NewSubCategorySubPageCode){
@@ -148,7 +154,9 @@ class _HomePageState extends State<HomePage> {
 
   @override
   void initState() {
+
     GetAllNonValdatingVenders().then((value){
+      if(this.mounted)
       setState(() {loading = false;});});
     super.initState();
   }
@@ -230,41 +238,138 @@ class _HomePageState extends State<HomePage> {
         ),
     );
   }
+
   void ShowDialogForCharges(double value){
+    showDialog(
+        barrierDismissible: false,
+        context: context,
+        builder: (context){
+          bool isAdding = false;
+          return  StatefulBuilder(
+              builder: (context,setState){
+                return AlertDialog(
+                  title: Column(
+                    children: [
+                      (!isAdding)?
+                      Column(
+                        children: [
+                          Text('Old Delivery Charges: ' + value.toString() + " SAR"),
+                          Text('Enter new delivery Charges'),
+                        ],
+                      ):
+                      Text('Wait loading...'),
+                    ],
+                  ),
+                  content: (isAdding)?Container(
+                    width: 50,
+                    height: 50,
+                    child: Center(child: CircularProgressIndicator(),),
+                  ):
+                  Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      TextField(
+                        controller: DeliveryChargesController,
+                        keyboardType: TextInputType.number,
+                        inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                        decoration: InputDecoration(
+                          contentPadding:
+                          EdgeInsets.only(left: 15, bottom: 11, top: 11, right: 15),
+                        ),
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          TextButton(
+                            onPressed: () => Navigator.of(context).pop(),
+                            child: Text('Cancel'),
+                          ),
+                          TextButton(
+                            onPressed: (){
+                              setState((){
+                                isAdding = true;
+                              });
+                              // Navigator.of(context).pop();
+                              if(DeliveryChargesController.text.length > 0)
+                                ChangeDeliveryCharges(ChangeDeliveryChargesUrl + double.parse(DeliveryChargesController.text).toString()).then((value){
+                                  Navigator.of(context).pop();
+                                });
+                                // launch(ChangeDeliveryChargesUrl + double.parse(DeliveryChargesController.text).toString());
+                            },
+                            child: Text('Change'),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                );
+              }
+          );
+        }
+    );
+  }
+
+  void ShowDialogForChargaes(double value){
     setState(() {loading = false;});
     showDialog(
         context: context,
         builder: (BuildContext context){
-          return  AlertDialog(
-            title: Column(
-              children: [
-                Text('Old Delivery Charges: ' + value.toString() + " SAR"),
-                Text('Enter new delivery Charges'),
-              ],
-            ),
-            content: TextField(
-              controller: DeliveryChargesController,
-              keyboardType: TextInputType.number,
-              inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-              decoration: InputDecoration(
-                contentPadding:
-                EdgeInsets.only(left: 15, bottom: 11, top: 11, right: 15),
-              ),
-            ),
-            actions: [
-              TextButton(
-                onPressed: () => Navigator.of(context).pop(),
-                child: Text('Cancel'),
-              ),
-              TextButton(
-                onPressed: (){
-                  Navigator.of(context).pop();
-                  if(DeliveryChargesController.text.length > 0)
-                  launch(ChangeDeliveryChargesUrl + double.parse(DeliveryChargesController.text).toString());
-                },
-                child: Text('Change'),
-              ),
-            ],
+          return  StatefulBuilder(
+              builder: (context,setState){
+                bool isupdating = false;
+                return AlertDialog(
+                  title: (isupdating)?
+                      Text("Wait Loading")
+                      :Column(
+                    children: [
+                      Text('Old Delivery Charges: ' + value.toString() + " SAR"),
+                      Text('Enter new delivery Charges'),
+                    ],
+                  ),
+                  content: (isupdating)?
+                  Center(
+                    child: Container(
+                      width: 50,
+                      height: 50,
+                      child: CircularProgressIndicator(),
+                    ),
+                  )
+                      :Column(
+                    mainAxisSize: MainAxisSize.min,
+                        children: [
+                          TextField(
+                            controller: DeliveryChargesController,
+                            keyboardType: TextInputType.number,
+                            inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                            decoration: InputDecoration(
+                              contentPadding:
+                              EdgeInsets.only(left: 15, bottom: 11, top: 11, right: 15),
+                            ),
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              TextButton(
+                                onPressed: () => Navigator.of(context).pop(),
+                                child: Text('Cancel'),
+                              ),
+                              TextButton(
+                                onPressed: (){
+                                  setState((){
+                                    isupdating = true;
+                                  });
+                                  // Navigator.of(context).pop();
+                                  if(DeliveryChargesController.text.length > 0)
+                                    launch(ChangeDeliveryChargesUrl + double.parse(DeliveryChargesController.text).toString());
+                                },
+                                child: Text('Change'),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                );
+              }
           );
         }
     );
@@ -348,10 +453,12 @@ class _HomePageState extends State<HomePage> {
       DeleteSubCategory(id).then((value){
         if(value){
           ShowToast("SubCategory Deleted", context);
+          if(this.mounted)
           setState(() {isDeleting = false;});
           Navigator.of(context).pop();
         }
         else{
+          if(this.mounted)
           setState(() {isDeleting = false;});
           ShowToast("Error in Deleting", context);
           Navigator.of(context).pop();
