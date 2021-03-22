@@ -13,6 +13,7 @@ import 'package:emall_adminpanel/Screens/HomePage/DrawerPages/Validation.dart';
 import 'package:emall_adminpanel/Screens/HomePage/DrawerPages/VenderPayments.dart';
 import 'package:emall_adminpanel/Screens/Others/AlertDialogs.dart';
 import 'package:emall_adminpanel/Screens/Others/Loading.dart';
+import 'package:emall_adminpanel/Screens/Others/finalLoading.dart';
 import 'package:emall_adminpanel/SettingsAndVariables/Settings.dart';
 import 'package:emall_adminpanel/SettingsAndVariables/Toast/ToastMessages.dart';
 import 'package:emall_adminpanel/SettingsAndVariables/Variables.dart';
@@ -38,6 +39,7 @@ class _HomePageState extends State<HomePage> {
   TextEditingController ArabicController = TextEditingController();
   bool loading = true;
   bool isDeleting = false;
+  bool Finalloading = false;
 
   Widget DrawerTile(String text,String Where){
 
@@ -156,6 +158,8 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
 
+    if(!isAuth) Finalloading = true;
+
     GetAllNonValdatingVenders().then((value){
       if(this.mounted)
       setState(() {loading = false;});});
@@ -234,6 +238,7 @@ class _HomePageState extends State<HomePage> {
                 ),
               ),
               Loadingscreen(loading, context),
+              FinalLoadingscreen(Finalloading, context),
             ],
           ),
         ),
